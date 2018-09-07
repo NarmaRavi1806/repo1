@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<context:annotation-config/>
+	<context:component-scan base-package="com.cg.sportsSchedule"/>
+	
+	<bean class="com.cg.sportsSchedule.bean.Game" id="game1">
+	<property name="name" value="Tennis"></property>
+	</bean>
+	<bean class="com.cg.sportsSchedule.bean.Game" id="game2">
+	<property name="name" value="Long Jump"></property>
+	</bean>
+	<bean class="com.cg.sportsSchedule.bean.Game" id="game3">
+	<property name="name" value="High Jump"></property>
+	</bean>
+	<bean class="com.cg.sportsSchedule.bean.Game" id="game4">
+	<property name="name" value="Throw Ball"></property>
+	</bean>
+	<util:map id="map" key-type="java.lang.String"
+		value-type="com.cg.sportsSchedule.bean.Day">
+		<entry key="Day6">
+		<bean class="com.cg.sportsSchedule.bean.Day" name="Day">
+	<property name="name" value="Day6"></property>
+				<property name="games" ref="Gamelist" ></property>
+			</bean>
+		</entry>
+		<entry key="Day7">
+		<bean class="com.cg.sportsSchedule.bean.Day" name="DayName">
+	<property name="name" value="Day7"></property>
+				<property name="games" ref="Gamelist1" ></property>
+			</bean>
+		</entry>
+		<entry key="Day9">
+		<bean class="com.cg.sportsSchedule.bean.Day" name="DayNam2e">
+	<property name="name" value="Day9"></property>
+				<property name="games" ref="Gamelist2" ></property>
+			</bean>
+		</entry>
+		<entry key="Day8">
+		<bean class="com.cg.sportsSchedule.bean.Day" name="DayName1">
+	<property name="name" value="Day7"></property>
+				<property name="games" ref="Gamelist3" ></property>
+			</bean>
+		</entry>
+
+	</util:map>
+
+	<util:list id="Gamelist"
+		value-type="com.cg.sportsSchedule.bean.Game">
+		<value>Chess</value>
+		<value>Tennis</value>
+		<value>Throw Ball</value>
+	</util:list>
+	<util:list id="Gamelist1"
+		value-type="com.cg.sportsSchedule.bean.Game">
+		<value>Chess</value>
+		<value>Chess</value>
+	</util:list>
+	<util:list id="Gamelist2"
+		value-type="com.cg.sportsSchedule.bean.Game">
+		<ref bean="game2"/>
+	</util:list>
+	<util:list id="Gamelist3"
+		value-type="com.cg.sportsSchedule.bean.Game">
+		<value>Chess</value>
+	</util:list>
+	
+
+
+</beans>
