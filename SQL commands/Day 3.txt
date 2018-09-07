@@ -1,0 +1,38 @@
+ CREATE OR REPLACE PROCEDURE Raise_Salary
+ (s_no IN NUMBER, Raise_Sal IN NUMBER) IS
+  V_cur_Salary NUMBER;
+  Missing_Salary EXCEPTION;
+  BEGIN
+  SELECT Salary INTO V_cur_Salary FROM Staff_Master
+  WHERE Staff_Code = s_no;
+  IF V_cur_Salary IS NULL
+  THEN
+  RAISE Missing_Salary;
+  END IF;
+  UPDATE Staff_Master SET Salary=V_cur_Salary+Raise_Sal
+  WHERE Staff_Code =s_no;
+  EXCEPTION
+  WHEN Missing_Salary THEN
+  dbms_output.put_line('Salary is Missing');
+  END Raise_Salary;
+  /
+
+Warning: Procedure created with compilation errors.
+
+
+
+CREATE OR REPLACE FUNCTION Count_Staff
+(
+Deptno NUMBER
+)
+
+RETURN NUMBER
+AS
+v_Count NUMBER(2);
+BEGIN
+SELECT COUNT(*) INTO v_count
+FROM Staff_Master
+WHERE Dept_code= Deptno;
+RETURN v_count;
+
+END Count_Staff;

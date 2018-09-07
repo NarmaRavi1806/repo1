@@ -1,0 +1,1215 @@
+SQL> connect system/orcl11g
+Connected.
+SQL> CREATE TABLE Emp
+  2  (EmpNo NUMBER(4) CONSTRAINT EmpNo_Pk PRIMARY KEY,
+  3  Ename VARCHAR2(10),
+  4  Job VARCHAR2(9)
+  5  ,Mgr NUMBER(4),
+  6  HireDate Date,
+  7  Sal NUMBER(7,2),
+  8  Comm NUMBER(7,2),
+  9  Deptno NUMBER(2)
+ 10  );
+
+Table created.
+
+SQL> CREATE TABLE Designation_Master
+  2  ( Design_Code NUMBER(3) CONSTRAINT Design_Code_Pk PRIMARY KEY,
+  3  Design_Name VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE Stud_Master
+  2  ( Student_Code NUMBER(6) CONSTRAINT Stud_Code_Pk PRIMARY KEY,
+  3  Student_Name VARCHAR2(50) NOT NULL,
+  4  Dept_Code NUMBER(2),
+  5  Student_Dob DATE,
+  6  Student_Address VARCHAR2(240)
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE Student_Marks
+  2  (Stud_Code NUMBER(6),
+  3  Student_Year NUMBER CONSTRAINT Stud_Year_Pk PRIMARY KEY,
+  4  Subject1 NUMBER(3),
+  5  Subject2 NUMBER(3),
+  6  Subject3 NUMBER(3)
+  7  );
+
+Table created.
+
+SQL> CREATE TABLE Staff_Master1
+  2  ( Staff_Code NUMBER(8) CONSTRAINT Staff_Code_Pk1 PRIMARY KEY,
+  3  Staff_Name VARCHAR2(50) NOT NULL,
+  4  Design_Code NUMBER,
+  5  Dept_Code NUMBER,
+  6  Hire_Date DATE,
+  7  Staff_Dob DATE,
+  8  Staff_Address VARCHAR2(240),
+  9  Mgr_Code NUMBER(8),
+ 10  Staff_Sal NUMBER(10,2)
+ 11  );
+
+Table created.
+
+
+SQL> CREATE TABLE Dept_Master
+  2  ( Dept_Code NUMBER(2) CONSTRAINT Dept_Code_Pk1 PRIMARY KEY,
+  3  Dept_Name VARCHAR2(50)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE Book_Master
+  2  ( Book_Code NUMBER(10),
+  3
+SQL> CREATE TABLE Book_Master
+  2  ( Book_Code NUMBER(10) CONSTRAINT Book_Code_Pk PRIMARY KEY,
+  3  Book_Name VARCHAR2(50) NOT NULL
+  4
+SQL> CREATE TABLE Book_Master
+  2  ( Book_Code NUMBER(10) CONSTRAINT Book_Code_Pk PRIMARY KEY,
+  3  Book_Name VARCHAR2(50) NOT NULL
+  4  );
+
+Table created.
+
+SQL> ALTER TABLE Book_Master
+  2  ADD Book_Pub_Year NUMBER;
+
+Table altered.
+
+SQL> ALTER TABLE Book_Master
+  2  ADD Book_Pub_Author VARCHAR2(50) NOT NULL;
+
+Table altered.
+
+SQL> DESC Book_Master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ BOOK_CODE                                 NOT NULL NUMBER(10)
+ BOOK_NAME                                 NOT NULL VARCHAR2(50)
+ BOOK_PUB_YEAR                                      NUMBER
+ BOOK_PUB_AUTHOR                           NOT NULL VARCHAR2(50)
+
+SQL> CREATE TABLE Book_Transactions
+  2  (Book_Code NUMBER,
+  3  Student_Code NUMBER,
+  4  Staff_Code NUMBER,
+  5  Book_Issue_Date DATE NOT NULL,
+  6  Book_Expected_Return_Date DATE NOT NULL,
+  7  Book_Actual_Return_Date DATE);
+
+Table created.
+
+
+
+SQL> INSERT INTO Designation_Master(Design_Code,Design_name)
+  2  VALUES(0010,'Manager');
+
+1 row created.
+
+SQL> INSERT INTO Designation_Master(Design_Code,Design_name)
+  2  VALUES(0021,'Analyst');
+
+1 row created.
+
+SQL> INSERT INTO Designation_Master(Design_Code,Design_name)
+  2  VALUES(0042,'Clerk');
+
+1 row created.
+
+SQL> INSERT INTO Designation_Master(Design_Code,Design_name)
+  2  VALUES(0050,'Trainer');
+
+1 row created.
+
+SQL> INSERT INTO Dept_Master(Dept_Code,Dept_Name)
+  2  VALUES(10,'IT');
+
+1 row created.
+
+SQL> INSERT INTO Dept_Master(Dept_Code,Dept_Name)
+  2  VALUES(20,'HR');
+
+1 row created.
+
+SQL> INSERT INTO Dept_Master(Dept_Code,Dept_Name)
+  2  VALUES(30,'L&D');
+Enter value for d:
+old   2: VALUES(30,'L&D')
+new   2: VALUES(30,'L')
+
+1 row created.
+
+SQL> DELETE FROM Dept_Master
+  2  WHERE Dept_Code=30;
+
+1 row deleted.
+
+SQL> INSERT INTO Dept_Master(Dept_Code,Dept_Name)
+  2  VALUES(30,'L AND D');
+
+1 row created.
+
+SQL> INSERT INTO Dept_Master(Dept_Code,Dept_Name)
+  2  VALUES(40,'FINANCE');
+
+1 row created.
+
+
+
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(101,'Sumithra',0010,10,'09-JUL-2000','09-JUL-1979','Chennai',001,25000);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(102,'Suman',0050,30,'30-JUL-2006','09-Jan-1985','Pune',001,15000);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(103,'Diva',0021,10,'18-Jun-2001','16-Jan-1978','Bangalore',003,20000);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  Staff_Sal)
+  4  VALUES(104,'Kevin',0042,40,'13-Mar-2005','16-Feb-1983','Bangalore',43000);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  Staff_Sal)
+  4  VALUES(105,'Avi',0042,20,'20-Mar-2003','16-Sep-1980','Chennai',50000);
+
+1 row created.
+
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(106,'Kristin',0010,10,'19-May-2008','16-Sep-1990','Hyderabad',003,20000);
+
+1 row created.
+
+SQL> SELECT * FROM Staff_Master1;
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       101 Sumithra                                                    10
+        10 09-JUL-00 09-JUL-79
+Chennai
+         1      25000
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       102 Suman                                                       50
+        30 30-JUL-06 09-JAN-85
+Pune
+         1      15000
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       103 Diva                                                        21
+        10 18-JUN-01 16-JAN-78
+Bangalore
+         3      20000
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       104 Kevin                                                       42
+        40 13-MAR-05 16-FEB-83
+Bangalore
+                43000
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       105 Avi                                                         42
+        20 20-MAR-03 16-SEP-80
+Chennai
+                50000
+
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL
+---------- ----------
+       106 Kristin                                                     10
+        10 19-MAY-08 16-SEP-90
+Hyderabad
+         3      20000
+
+
+6 rows selected.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(107,'Natalie',0021,30,'25-Jan-1995','22-Sep-1967','Mumbai',003,60000);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master1
+  2  (staff_code,staff_name,Design_code,Dept_code,Hire_Date,Staff_Dob,Staff_Address,
+  3  MGR_Code,Staff_Sal)
+  4  VALUES(108,'Chris',0010,40,'11-Aug-1996','13-Oct-1969','Chennai',001,65000);
+
+1 row created.
+
+SQL> SELECT Staff_Name AS Employee_Name,Design_Code AS Desg_Code
+  2  From Staff_Master1
+  3  WHERE Hire_Date<'01-Jan-2003'
+  4  AND Staff_Sal BETWEEN 12000 AND 25000;
+
+EMPLOYEE_NAME                                       DESG_CODE
+-------------------------------------------------- ----------
+Sumithra                                                   10
+Diva                                                       21
+
+SQL> SELECT * FROM Book_Master;
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR
+---------- -------------------------------------------------- -------------
+BOOK_PUB_AUTHOR
+--------------------------------------------------
+      1000 Memoirs Of Sherlock Holmes                                  1969
+Sir Arthur Conan Doyle
+
+      2000 Da-Vinci Code                                               2002
+Dan Brown
+
+      3000 MoonStone                                                   2001
+Wilki Collins
+
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR
+---------- -------------------------------------------------- -------------
+BOOK_PUB_AUTHOR
+--------------------------------------------------
+      4000 The Girl On the Train                                       2017
+Gillian Flyn
+
+      5000 Harry Potter & The Goblet Of Fire                           2003
+G.K.Rowling
+
+
+
+SQL> SELECT * FROM Book_Master
+  2  WHERE Book_Name LIKE '%&%';
+
+ BOOK_CODE BOOK_NAME                                          BOOK_PUB_YEAR
+---------- -------------------------------------------------- -------------
+BOOK_PUB_AUTHOR
+--------------------------------------------------
+      5000 Harry Potter & The Goblet Of Fire                           2003
+G.K.Rowling
+
+
+SQL> SELECT Staff_Name From Staff_Master1
+  2  WHERE Staff_Name LIKE '%-%';
+
+STAFF_NAME
+--------------------------------------------------
+Jaden-Smith
+
+
+SQL> SELECT TO_CHAR(Staff_Sal,'$99,999.00') FROM Staff_Master1;
+
+TO_CHAR(STA
+-----------
+ $25,000.00
+ $15,000.00
+ $20,000.00
+ $43,000.00
+ $50,000.00
+ $20,000.00
+ $60,000.00
+ $65,000.00
+ $63,000.00
+ $10,000.00
+ $11,000.00
+
+TO_CHAR(STA
+-----------
+ $32,000.00
+
+12 rows selected.
+
+SQL> ALTER TABLE Staff_Master1
+  2  MODIFY Staff_Sal VARCHAR2(15);
+
+
+SQL> SELECT Staff_Name,CEIL(MONTHS_BETWEEN(SYSDATE,Hire_Date)) AS MonthsWorked
+  2  FROM Staff_Master1;
+
+STAFF_NAME                                         MONTHSWORKED
+-------------------------------------------------- ------------
+Sumithra                                                    217
+Suman                                                       144
+Diva                                                        205
+Kevin                                                       161
+Avi                                                         184
+Kristin                                                     122
+Natalie                                                     282
+Chris                                                       264
+Robert_Drowney                                              284
+Jon_Snow                                                    213
+Arya_Stark                                                  225
+
+STAFF_NAME                                         MONTHSWORKED
+-------------------------------------------------- ------------
+Jaden-Smith                                                 220
+
+12 rows selected.
+
+
+SQL> SELECT Staff_Name,Staff_Sal,Grade,
+  2  Case
+  3  WHEN Staff_Sal>=50000 THEN 'A'
+  4  WHEN Staff_Sal>=25000 AND Staff_Sal<50000 THEN 'B'
+  5  WHEN Staff_Sal>=10000 AND Staff_Sal<25000 THEN 'C'
+  6  ELSE 'D'
+  7  END
+  8  FROM Staff_Master1;
+
+STAFF_NAME                                          STAFF_SAL GR C
+-------------------------------------------------- ---------- -- -
+Sumithra                                                25000    B
+Suman                                                   15000    C
+Diva                                                    20000    C
+Kevin                                                   43000    B
+Avi                                                     50000    A
+Kristin                                                 20000    C
+Natalie                                                 60000    A
+Chris                                                   65000    A
+Robert_Drowney                                          63000    A
+Jon_Snow                                                10000    C
+Arya_Stark                                              11000    C
+
+STAFF_NAME                                          STAFF_SAL GR C
+-------------------------------------------------- ---------- -- -
+Jaden-Smith                                             32000    B
+
+12 rows selected.
+
+
+
+ SELECT INSTR('Missisippi', 'i', 1, 3) FROM dual;
+
+INSTR('MISSISIPPI','I',1,3)
+---------------------------
+                          7
+
+
+
+SQL> SELECT * FROM Staff_Master1
+  2  Where TO_NUMBER(TO_CHAR(Staff_Master1.Hire_Date, 'DD')) <= 15
+  3  AND TO_Char(Staff_Master1.Hire_Date,'Mon')='Dec';
+
+STAFF_CODE STAFF_NAME                                         DESIGN_CODE
+---------- -------------------------------------------------- -----------
+ DEPT_CODE HIRE_DATE STAFF_DOB
+---------- --------- ---------
+STAFF_ADDRESS
+--------------------------------------------------------------------------------
+  MGR_CODE  STAFF_SAL GR
+---------- ---------- --
+       109 Robert_Drowney                                              50
+        30 11-DEC-94 13-OCT-65
+Bangalore
+         1      63000
+
+
+
+
+SQL> SELECT Student_Name,TO_CHAR(Student_Dob,'MONTH,DD YYYY')
+  2  FROM STud_Master
+  3  WHERE TO_CHAR(Stud_Master.Student_Dob, 'Dy') ='Sat';
+
+STUDENT_NAME
+--------------------------------------------------
+TO_CHAR(STUDENT_DOB,'MONTH,DDYYYY')
+--------------------------------------------
+Sana
+JANUARY  ,20 2018
+
+6.	Display the Staff Name, Hire date and day of the week on which staff was hired.
+ Label the column as DAY. Order the result by the day of the week starting with Monday. 
+       Hint :Use to_char with hiredate and formats ‘DY’ and ’D’
+
+SQL> SELECT Staff_name,Hire_Date,TO_CHAR(Hire_Date,'Dy') AS DAY
+  2  FROM Staff_Master1
+  3  ORDER BY TO_CHAR(Hire_Date-1,'D');
+
+STAFF_NAME                                         HIRE_DATE DAY
+-------------------------------------------------- --------- ------------
+Kristin                                            19-MAY-08 Mon
+Diva                                               18-JUN-01 Mon
+Arya_Stark                                         02-NOV-99 Tue
+Natalie                                            25-JAN-95 Wed
+Avi                                                20-MAR-03 Thu
+Jon_Snow                                           02-NOV-00 Thu
+Jaden-Smith                                        25-MAR-00 Sat
+Sumithra                                           09-JUL-00 Sun
+Chris                                              11-AUG-96 Sun
+Robert_Drowney                                     11-DEC-94 Sun
+Suman                                              30-JUL-06 Sun
+
+STAFF_NAME                                         HIRE_DATE DAY
+-------------------------------------------------- --------- ------------
+Kevin                                              13-MAR-05 Sun
+
+12 rows selected.
+
+
+9.	Display Student code, Name and Dept Name. Display “Electricals” if dept code = 20,
+ “Electronics” if Dept code =30 and “Others” for all other Dept codes in the Dept Name column. 
+Hint : Use Decode 
+
+SQL> SELECT STUDENT_CODE,STUDENT_NAME,DECODE(DEPT_CODE,50,'ELECTRICALS',60,'ELECTRONICS','OTHERS') DEPARTMENT_NAME FROM STUD_MASTER;
+
+STUDENT_CODE STUDENT_NAME                                       DEPARTMENT_
+------------ -------------------------------------------------- -----------
+        1001 Chris                                              ELECTRICALS
+        1002 Praba                                              ELECTRICALS
+        1003 Robert                                             ELECTRONICS
+        1004 Ria                                                ELECTRONICS
+        1005 Sana                                               ELECTRICALS
+
+2.2: Group Functions:
+
+
+1.	Display the Highest, Lowest, Total & Average salary of all staff. Label the columns Maximum, Minimum,
+ Total and Average respectively for each Department code. Also round the result to the nearest whole number.
+
+
+SQL> SELECT ROUND(max(Staff_sal)) AS Maximum,ROUND(Min(Staff_Sal)) AS Minimum,ROUND(Avg(Staff_sal)) AS Average
+  2        FROM Staff_master1;
+
+   MAXIMUM    MINIMUM    AVERAGE
+---------- ---------- ----------
+     65000      10000      34500
+
+2.	Display Department code and number of managers working in that department.
+ Label the column as ‘Total Number of Managers’ for each department.
+
+SQL> SELECT Deptno,COUNT(deptno) AS Total_Number_of_Managers
+  2         FROM EMP WHERE JOB IN('MANAGER') GROUP BY Deptno,job;
+
+3.	Get the Department number, and sum of Salary of all non-managers where the sum is greater than 20000. 
+
+SQL> SELECT Deptno,sum(sal) FROM EMP
+  2      WHERE JOB NOT IN('MANAGER')
+  3           GROUP BY Deptno --HAVING sum(sal) > 20000-- ORDER BY DeptNo;
+
+Joins and Subqueries
+1.	Write a query which displays Staff Name, Department Code, Department Name,
+ and Salary for all staff who earns more than 20000.
+
+SQL>  SELECT S.STAFF_NAME,
+  2    D.DEPT_CODE,
+  3    D.DEPT_NAME,
+  4    S.STAFF_SAL
+  5  FROM STAFF_MASTER1 S,
+  6    DEPARTMENT_MASTER D
+  7  WHERE S.DEPT_CODE=D.DEPT_CODE
+  8  AND STAFF_SAL    >20000;
+
+STAFF_NAME                                          DEPT_CODE
+-------------------------------------------------- ----------
+DEPT_NAME                       STAFF_SAL
+------------------------------ ----------
+Sumithra                                                   10
+HR                                  25000
+
+Kevin                                                      40
+TESTING                             43000
+
+Avi                                                        20
+IT                                  50000
+
+
+STAFF_NAME                                          DEPT_CODE
+-------------------------------------------------- ----------
+DEPT_NAME                       STAFF_SAL
+------------------------------ ----------
+Natalie                                                    30
+FINANCE                             60000
+
+Chris                                                      40
+TESTING                             65000
+
+Robert_Drowney                                             30
+FINANCE                             63000
+
+
+STAFF_NAME                                          DEPT_CODE
+-------------------------------------------------- ----------
+DEPT_NAME                       STAFF_SAL
+------------------------------ ----------
+Jaden-Smith                                                20
+IT                                  32000
+
+
+7 rows selected.
+
+2.	Display Staff Code, Staff Name, Department Name, and his manager’s number and name.
+ Label the columns Staff#, Staff, Mgr#, Manager. 
+
+SELECT S.STAFF_CODE AS STAFF# ,
+  S.STAFF_NAME      AS STAFF,
+  D.DEPT_NAME,
+  S.MGR_CODE AS MGR#
+FROM STAFF_MASTER1 S,
+  DEPT_MASTER D
+WHERE S.DEPT_CODE=D.DEPT_CODE;
+
+3.	Create a query that will display Student Code, Student Name, Book Code,
+ and Book Name for all students whose expected book return date is today.
+
+select w.staff_code "Staff#", w.staff_name "Manager",w.mgr_code 
+"Mgr#",s.staff_name "Staff",d.dept_name "Department Name" from
+ staff_master w,staff_master s,department_master d 
+where w.staff_code=s.mgr_code and d.dept_code=s.dept_code;
+
+4.	Create a query that will display Staff Code, Staff Name, Department Name, 
+Designation name, Book Code, Book Name, and Issue Date for only those staff who
+ have taken any book in last 30 days. . If required, make changes to the table to create such a scenario.
+
+s.student_code,s.student_name,d.dept_name,m.subject1,m.subject2,m.subject3 
+from student_master s 
+join student_mark m on s.student_code=m.student_code 
+join department_master d on s.dept_code=d.dept_code 
+where m.subject1>60 and m.subject2>60 and m.subject3>60 and s.dept_code in(10,20);
+
+5.	Generate a report which contains the following information.
+Staff Code, Staff Name, Designation Name, Department, Book Code, Book Name,
+Author, Fine For the staff who has not returned the book. Fine will be calculated as Rs. 5 per day. 
+Fine = 5 * (No. of days = Current Date – Expected return date). Include records in the table to suit this 
+problem statement
+
+select s.student_code,s.student_name,b.book_code,b1.book_name 
+from student_master s join book_transaction b on s.student_code=b.student_code 
+join book_master b1 on b.book_code=b1.book_code where b.book_expected_re_date='19-FEB-11';
+
+6.	List Staff Code, Staff Name, and Salary for those who are getting less than the average salary of organization.
+
+ SELECT Staff_Code, Staff_Name,STAFF_SAL  FROM STAFF_MASTER1 WHERE STAFF_SAL<(SELECT AVG(STAFF_SAL) FROM STAFF_MASTER1);
+
+STAFF_CODE STAFF_NAME                                          STAFF_SAL
+---------- -------------------------------------------------- ----------
+       101 Sumithra                                                25000
+       102 Suman                                                   15000
+       103 Diva                                                    20000
+       106 Kristin                                                 20000
+       110 Jon_Snow                                                10000
+       111 Arya_Stark                                              11000
+       112 Jaden-Smith                                             32000
+
+7 rows selected.
+
+7.	Display Author Name, Book Name for those authors who wrote more than one book.
+
+select book_pub_author "Author Name",book_name "Book Name" 
+from book_master where book_pub_author 
+in (select book_pub_author from book_master group by book_pub_author having count(book_name)>1);
+
+8.	Display Staff Code, Staff Name, and Department Name for those who have taken more than one book. 
+
+select s.staff_code,s.staff_name,d.dept_name 
+from staff_master s join department_master d on s.dept_code=d.dept_code
+ join book_transactions bt on s.staff_code=bt.staff_code group by s.staff_code,s.staff_name,d.dept_name
+ having count(book_issue_date)>1;
+
+9.	Display the Student Code, Student Name, and Department Name for that department in which
+ there are maximum number of student  studying.
+
+
+
+10.	Display Staff Code, Staff Name, Department Name, and Designation name 
+for those who have joined in last 3 months.
+
+
+
+11.	Display the Manager Name and the total strength of his/her team.
+
+
+
+12.	Display the details of books that have not been returned and expected return date was last Monday. 
+Book name should be displayed in proper case.. Hint: You can change /add records so that the expected 
+return date  suits this problem statement
+
+
+
+13.	Write a query to display number of people in each Department. Output should display 
+Department Code, Department Name and Number of People.
+
+
+4.1: Database Objects
+1.	Create the Customer table with the following columns. 
+CustomerId	Number(5)
+Cust_Name	varchar2(20)
+Address1	Varchar2(30)
+Address2 	Varchar2(30)
+
+2.	Modify the Customer table Cust_Name column of datatype with Varchar2(30), rename the column
+ to CustomerName and it should not accept Nulls.
+
+
+SQL> DESC Customer_Table;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMER_ID                                        NUMBER(5)
+ CUSTOMER_NAME          NOT NULL VARCHAR2(20)
+ ADDRESS_1                                          VARCHAR2(30)
+ ADDRESS_2                                          VARCHAR2(30)
+
+
+
+3.	a) Add the following Columns to the Customer table. 
+Gender		Varchar2(1)
+Age		Number(3)
+PhoneNo	Number(10)
+ b) Rename the Customer table to Cust_Table
+
+SQL> ALTER TABLE Customer_Table
+  2  Add Gender VARCHAR2(1);
+
+Table altered.
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD Age NUMBER(3);
+
+Table altered.
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD PhoneNo NUMBER(10);
+
+Table altered.
+
+SQL> ALTER TABLE Customer_Table RENAME TO Cust_Table;
+
+Table altered.
+
+SQL> DESC Cust_Table;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMER_ID                                        NUMBER(5)
+ CUSTOMER_NAME                             NOT NULL VARCHAR2(20)
+ ADDRESS_1                                          VARCHAR2(30)
+ ADDRESS_2                                          VARCHAR2(30)
+ GENDER                                              VARCHAR2(1)
+ AGE                                                      NUMBER(3)
+ PHONENO                                            NUMBER(10)
+
+
+4.Insert rows with the following data in to the Customer table.
+Insert into customer values: (1000, ‘Allen’, ‘#115 Chicago’, ‘#115 Chicago’, ‘M’, ‘25, 7878776’)
+In similar manner, add the below records to the Customer table:
+1001, George, #116 France, #116 France, M, 25, 434524
+1002, Becker, #114 New York, #114 New York, M, 45, 431525
+
+SQL> INSERT INTO Cust_Table
+  2  values(1000, 'Allen', '#115 Chicago', '#115 Chicago', 'M', 25, 7878776);
+
+1 row created.
+
+SQL> INSERT INTO Cust_Table
+  2  values(1001, 'George', '#116 France', '#116 France', 'M', 25, 434524);
+
+1 row created.
+
+SQL> INSERT INTO Cust_Table
+  2  values(1002, 'Becker', '#114 New York', '#114 New York', 'M', 45, 431525);
+
+1 row created.
+
+
+SQL> SELECT * FROM Cust_Table;
+
+CUSTOMER_ID CUSTOMER_NAME        ADDRESS_1
+----------- -------------------- ------------------------------
+ADDRESS_2                      G        AGE    PHONENO
+------------------------------ - ---------- ----------
+       1000 Allen                #115 Chicago
+#115 Chicago                   M         25    7878776
+
+       1001 George               #116 France
+#116 France                    M         25     434524
+
+       1002 Becker               #114 New York
+#114 New York                  M         45     431525
+
+
+5.	Add the Primary key constraint for Customerld with the name Custld_Prim. 
+
+SQL> ALTER TABLE Cust_Table
+  2  MODIFY Customer_Id NUMBER(5) CONSTRAINT CustId_Prim PRIMARY KEY;
+
+Table altered.
+
+SQL> DESC Cust_Table;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMER_ID                               NOT NULL NUMBER(5)
+ CUSTOMER_NAME                                      VARCHAR2(20)
+ ADDRESS_1                                          VARCHAR2(30)
+ ADDRESS_2                                          VARCHAR2(30)
+ GENDER                                             VARCHAR2(1)
+ AGE                                                NUMBER(3)
+ PHONENO                                            NUMBER(10)
+
+6.	Insert the row given below in the Customer table and see the message generated by the Oracle server. 
+1002, John, #114 Chicago, #114 Chicago, M, 45, 439525
+
+
+SQL> INSERT INTO Cust_Table
+  2  values(1002, 'John', '#114 Chicago', '#114 Chicago', 'M', 45, 439525);
+INSERT INTO Cust_Table
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.CUSTID_PRIM) violated
+
+7.	Disable the constraint on CustomerId, and insert the following data:
+1002, Becker, #114 New York, #114 New york , M, 45, 431525
+1003, Nanapatekar, #115 India, #115 India , M, 45, 431525
+
+
+SQL> ALTER TABLE Cust_Table
+  2  drop primary key;
+
+Table altered.
+
+SQL> INSERT INTO Cust_Table
+  2  values(1002, 'Becker', '#114 New York', '#114 New york' , 'M', 45, 431525);
+
+1 row created.
+
+SQL> INSERT INTO Cust_Table
+  2  values(1003, 'Nanapatekar', '#115 India', '#115 India' , 'M', 45, 431525);
+
+1 row created.
+
+8.	Enable the constraint on CustomerId of the Customer table, and see the 
+message generated by the Oracle server. 
+
+SQL> Alter table cust_table add constraints Custid_prim PRIMARY KEY (customer_id);
+Alter table cust_table add constraints Custid_prim PRIMARY KEY (customer_id)
+                                       *
+ERROR at line 1:
+ORA-02437: cannot validate (SYSTEM.CUSTID_PRIM) - primary key violated
+
+
+9.	Drop the constraint Custld_Prim on CustomerId and insert the following Data. Alter Customer table, 
+drop constraint Custid_Prim.
+1002, Becker, #114 New York, #114 New york , M, 45, 431525, 15000.50
+1003, Nanapatekar, #115 India, #115 India , M, 45, 431525, 20000.50
+
+SQL> INSERT INTO Cust_Table
+  2  values(1002, 'Becker', '#114 New York', '#114 New york' , 'M', 45, 431525, 15000.50);
+INSERT INTO Cust_Table
+            *
+ERROR at line 1:
+ORA-00913: too many values
+
+10.	Delete all the existing rows from Customer table, and let the structure remain itself using 
+TRUNCATE statement.
+
+SQL> TRUNCATE table cust_table;
+
+Table truncated. 
+
+11.	In the Customer table, add a column E_mail. 
+
+SQL> Alter table Cust_Table  add e_mail varchar2(30);
+
+Table altered.
+
+12.	Drop the E_mail column from Customer table. 
+
+SQL> Alter table cust_table
+  2  drop Column  E_mail ;
+
+Table altered.
+
+13.	Create the Suppliers table based on the structure of the Customer table.
+ Include only the CustomerId, CustomerName, Address1, Address2, and phoneno columns. 
+Name the columns in the new table as SuppID, SName, Addr1, Addr2, and Contactno respectively. 
+
+SQL> create table Suppliers as select customer_id as suppid,customer_name as sname,address_1 as addr1,address_2 as addr2,phoneno as contactno from cust_table;
+
+Table created.
+
+14.	Drop the above table and recreate the following table with the name CustomerMaster. 
+CustomerId	Number(5) Primary key(Name of constraint is CustId_PK)
+CustomerName	Varchar2(30) Not Null
+Addressl	Varchar2(30) Not Null
+Address2	Varchar2(30)
+Gender		Varchar2(l)
+Age		Number(3)
+PhoneNo	Number(10)
+
+SQL> DROP Table Suppliers;
+
+Table dropped.
+
+SQL> create table customermaster(customerid NUMBER(10) CONSTRAINT custid_pk PRIMARY KEY,
+customername varchar2(30) NOT NULL,Address1 varchar2(30) NOT NULL,Address2 varchar2(30),
+Gender varchar2(1),Age number(3),phoneno number(10));
+
+Table created.
+
+15.	Create the AccountsMaster table with the following Columns. Use sequence to generate Account number
+Customerld		Number(5)
+AccountNumber		Number(10,2) Primary key(Name of constraint is Acc_PK)
+AccountType		Char(3)
+LedgerBalance		Number(10,2) Not Null
+
+SQL> CREATE TABLE AccountsMaster
+  2  (CustomerId NUMBER(5), AccountNumber NUMBER(10,2) CONSTRAINT Acc_PK PRIMARY KEY,
+  3  AccountType CHAR(3), LedgerBalance NUMBER(10,2) NOT NULL);
+
+Table created.
+
+16.	Relate AccountsMaster table and CustomerMaster table through Customerld column with the constraint
+ name Cust_acc.
+
+SQL> Alter table Accountsmaster ADD constraint ass_fk FOREIGN KEY(customerid)
+ REFERENCES customermaster(customerid);
+
+Table altered.
+
+17.	Insert the following rows to the CustomerMaster table:
+1000, Allen, #115 Chicago, #115 Chicago, M, 25, 7878776
+1001, George, #116 France, #116 France, M, 25, 434524
+1002, Becker, #114 New York, #114 New York, M, 45, 431525
+
+SQL> INSERT INTO CustomerMaster
+  2  (customerid,customername,Address1,Address2,Gender,Age,Phoneno)
+  3  VALUES(1000, 'Allen', '#115 Chicago', '#115 Chicago', 'M', 25, 7878776);
+
+1 row created.
+
+SQL> INSERT INTO CustomerMaster
+  2  (customerid,customername,Address1,Address2,Gender,Age,Phoneno)
+  3  VALUES(1001, 'George', '#116 France', '#116 France', 'M', 25, 434524);
+
+1 row created.
+
+SQL> INSERT INTO CustomerMaster
+  2  (customerid,customername,Address1,Address2,Gender,Age,Phoneno)
+  3  VALUES(1002, 'Becker', '#114 New York', '#114 New York', 'M', 45, 431525);
+
+1 row created.
+
+18.	Modify the AccountMaster table with the Check constraint to ensure AccountType
+ should be either NRI or IND.
+
+SQL> alter table Accountsmaster add constraint ck_ac check(AccountType='NRI' or AccountType='IND');
+
+Table altered.
+
+19.	Modify the AccountsMaster table keeping a Check constraint with
+ the name Balance_Check for the Minimum Balance which should be greater than 5000. 
+
+SQL> alter table Accountsmaster add constraint Balance_check Check (ledgerbalance > 5000);
+
+Table altered.
+
+20.	Modify the AccountsMaster table such that if Customer is deleted from 
+Customer table then all his details should be deleted from AccountsMaster table. 
+
+
+
+21.	Create Backup copy for the AccountsMaster table with the name ‘AccountDetails’. 
+
+SQL> Create table accountdetails as select * from Accountsmaster;
+
+Table created.
+
+22.	Create a view ‘Acc_view’ with columns Customerld, CustomerName, 
+AccountNumber, AccountType, and LedgerBalance from AccountsMaster.
+ In the view Acc_view, the column names should be CustomerCode, AccountHolderName,
+ AccountNumber, Type, and Balance for the respective columns from AccountsMaster table. 
+
+acc_view2(customercode,accountmaster,accountnumber,type,balance) as 
+select customer_id,cname,account_number,account_type,ledger_balance from account_master;
+
+23.	Create a view on AccountsMaster table with name vAccs_Dtls. 
+This view should list all customers whose AccountType is ‘IND’ and their balance 
+amount should not be less than 10000. Using this view any DML operation should not violate the view conditions. 
+
+ Hint: Use the With Check Option constraint.
+
+SQL> CREATE VIEW vAccs_Dtls AS SELECT Accounttype,ledgerbalance from
+ Accountsmaster where accounttype = 'IND' and ledgerbalance < 10000;
+
+View created.
+
+24.	Create a view accsvw10 which will not allow DML statement against it.
+
+create view accsvw10 as select account_type,customer_id from account_master with read only;
+
+25.	Create a Sequence with the name Seq_Dept on Deptno column of 
+Department_Masters table. It should start from 40 and stop at 200. Increment 
+parameter for the sequence Seq_Dept should be in step of 10.
+
+SQL> CREATE sequence SEQ_DEPT minvalue 40 start with 40
+  2  increment by 10 MAXVALUE 200 cache 40;
+
+Sequence created.
+
+26.	Insert three sample rows by using the above sequence in Department_Masters table.
+
+SQL> create table departmentmaster(deptno number(10),Dname varchar2(25),location varchar2(25));
+
+Table created.
+
+SQL> insert into departmentmaster  values(seq_dept.NEXTVAL,'IT','Bangalore');
+
+1 row created.
+
+SQL> insert into departmentmaster  values(seq_dept.NEXTVAL,'HR','Chennai');
+
+1 row created.
+
+SQL> insert into departmentmaster  values(seq_dept.NEXTVAL,'L AND D','Hyderabad');
+
+1 row created.
+
+SQL> SELECT * FROM Departmentmaster;
+
+    DEPTNO DNAME                     LOCATION
+---------- ------------------------- -------------------------
+        40 IT                        Bangalore
+        50 HR                        Chennai
+        60 L AND D                   Hyderabad
+
+27.	Drop the Seq_Dept sequence. 
+
+SQL> Drop SEQUENCE Seq_Dept;
+
+Sequence dropped.
+
+28.	Get information on the index No_Name from the Data Dictionary.
+
+
+ 
+29.	Create synonym synEmp for the EMP table. 
+
+SQL> create SYNONYM synemp for emp;
+
+Synonym created.
+
+30.	Get Information on synonym synEmp from the Data Dictionary. 
+
+
+
+31.	Note: Perform this after creating the Employee Table mentioned in the next
+ Lab assignment. Create Index on HireDate column and give the name as idx_emp_hiredate for this object. 
+
+SQL> CREATE INDEX IDX_EMP_HIREDATE on emp(HIREDATE);
+
+Index created.
+
+32.	Create a Sequence with the name Seq_Emp on Empno column of Employee table.
+ It should start from 1001. Try to set Minimum value for this sequence which is less than / greater than
+ 1001, use the sequence to generate Empno while inserting records in Employee table and check the values generated.
+
+
+
+5.1: Data Manipulation Language
+1.	Create Employee table with same structure as EMP table.
+SQL>Create table employee as select * from emp where 1=3
+SQL>desc employee
+
+Name 	Null? 	Type 
+EMPNO 	NOT NULL 	NUMBER(4) 
+ENAME 	  	VARCHAR2(10) 
+JOB 	  	VARCHAR2(50) 
+MGR 	  	NUMBER(4) 
+HIREDATE 	  	DATE 
+SAL 	  	NUMBER(7,2) 
+COMM 	  	NUMBER(7,2) 
+DEPTNO 	  	NUMBER(2) 
+
+SQL>select * from employee
+
+table EMPLOYEE1 created.
+DESC EMPLOYEE1
+Name     Null Type         
+-------- ---- ------------ 
+EMPNO         NUMBER(4)    
+ENAME         VARCHAR2(10) 
+JOB           VARCHAR2(9)  
+MGR           NUMBER(4)    
+HIREDATE      DATE         
+SAL           NUMBER(7,2)  
+COMM          NUMBER(7,2)  
+DEPTNO        NUMBER(2) 
+
+2.	Write a query to populate Employee table using EMP table’s empno, ename, sal, deptno columns. 
+
+SQL>select * from employee
+EMPNO	ENAME	JOB 	MGR 	HIREDATE 	SAL 	COMM 	DEPTNO
+7369	SMITH	  	  	  	800 	  	20
+7499	ALLEN	  	  	  	1600 	  	30
+7521	WARD	  	  	  	1250 	  	30
+7566	JONES	  	  	  	2975 	  	20
+7654	MARTIN	  	  	  	1250 	  	30
+7698	BLAKE	  	  	  	2850 	  	30
+7782	CLARK	  	  	  	2450 	  	10
+7788	SCOTT	  	  	  	3000 	  	20
+7839	KING	  	  	  	5000 	  	10
+7844	TURNER	  	  	  	1500 	  	30
+7876	ADAMS	  	  	  	1100 	  	20
+7900	JAMES	  	  	  	950 	  	30
+7902	FORD	  	  	  	3000 	  	20
+7934	MILLER	  	  	  	1300 	  	10
+14 rows selected.
+
+insert into employee1(Empno,Ename,Sal,Deptno) values(7369,'Smith',800,20)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7499,'ALLEN',1600 	 , 	30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7521,	'WARD	',1250 	,30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7566,	'JONES', 2975,20)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7654,	'MARTIN',1250 ,30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7698,	'BLAKE'	,2850 ,30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7782,	'CLARK',2450,10)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7788,	'SCOTT',3000,20)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7839,	'KING',5000,10)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7844,	'TURNER', 1500 ,30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7876,	'ADAMS',1100,20)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7900	,'JAMES',	950, 30)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7902	,'FORD',3000 ,	20)
+insert into employee1(Empno,Ename,Sal,Deptno) values(7934,	'MILLER',1300 ,10)
+
+7369	Smith				800		20
+7499	ALLEN				1600		30
+7521	"WARD	"			1250		30
+7566	JONES				2975		20
+7654	MARTIN				1250		30
+7698	BLAKE				2850		30
+7782	CLARK				2450		10
+7788	SCOTT				3000		20
+7839	KING				5000		10
+7844	TURNER				1500		30
+7876	ADAMS				1100		20
+7900	JAMES				950		30
+7902	FORD				3000		20
+7934	MILLER				1300		10
+
+3.	Write a query to change the job and deptno of employee whose 
+empno is 7698 to the job and deptno of employee having empno 7788. 
+
+ update  EMPLOYEE1 set job=(select job from EMPLOYEE1 where empno=7788),
+ deptno=(select deptno from EMPLOYEE1 where empno=7788) where empno=7698;
+
+7698	BLAKE				2850		20
+7782	CLARK				2450		10
+7788	SCOTT				3000		20
+
+4.	Delete the details of department whose department name is ‘SALES’. 
+
+delete from emps where job='SALESMAN';
+
+5.	Write a query to change the deptno of employee with empno 7788 to that of employee having empno 7698.
+
+update  EMPLOYEE1 set deptno=(select deptno from EMPLOYEE1 where EMPNO=7788) where EMPNO=7698;
+
+7698	BLAKE				2850		20
+7782	CLARK				2450		10
+7788	SCOTT				3000		20
+ 
+6.	Insert the following rows to the Employee table through parameter substitution.
+•	1000,Allen, Clerk,1001,12-jan-01, 3000, 2,10
+•	1001,George, analyst, null, 08 Sep 92, 5000,0, 10
+•	1002, Becker, Manager, 1000, 4 Nov 92, 2800,4, 20
+•	1003, 'Bill', Clerk, 1002, 4 Nov 92,3000, 0, 20
+
+insert into emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values (1000,'Allen', 'Clerk',1001,'12-jan-01', 3000, 2,10);
+insert into emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values (1001,'George',' analyst', null, '08-Sep-92', 5000,0, 10);
+insert into emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values (1002, 'Becker',' Manager', 1000, '4-Nov-92', 2800,4, 20);
+insert into emp (empno,ename,job,mgr,hiredate,sal,comm,deptno) values (1003, 'Bill', 'Clerk', 1002,'4-Nov-92',3000, 0, 20);
+
+1000	Allen	Clerk	1001	12-JAN-01	3000	2	10
+1001	George	 analyst		08-SEP-92	5000	0	10
+1002	Becker	 Manager	1000	04-NOV-92	2800	4	20
+1003	Bill	Clerk	1002	04-NOV-92	3000	0	20
+
+6.1: Transaction Control Language Statements
+1.	Insert rows with the following data into the Customer table.
+ 6000, John, #115 Chicago, #115 Chicago, M, 25, 7878776, 10000
+•	6001, Jack, #116 France, #116 France, M, 25, 434524, 20000
+•	6002, James, #114 New York, #114 New York, M, 45, 431525, 15000.50
+Use parameter substitution.
+
+insert into customer10(cust_id,cust_name,address1,address2,gender,age,phoneno,salary)
+values(&cust_id,&cust_name,&address1,&address2,&gender,&age,&phoneno,&salary);
+
+2.	Create a Savepoint named ‘SP1’ after third record in the Customer table .
+
+savepoint sp1;
+
+3.	Insert the below row in the Customer table. 
+6003, John, #114 Chicago, #114 Chicago, M, 45, 439525, 19000.60
+
+insert into customer10(cust_name,address1,address2,gender,age,phoneno,customerid) 
+values ('&cust_name','&address1','&address2','&gender',&age,&phoneno,&cid);
+
+4.	Execute rollback statement in such a way that whatever manipulations 
+done before Savepoint sp1 are permanently implemented, and the ones after Savepoint
+ SP1 are not stored as a part of the Customer table. 
+
+rollback to sp1;
+

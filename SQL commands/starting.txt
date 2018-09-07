@@ -1,0 +1,3186 @@
+
+SQL*Plus: Release 11.2.0.2.0 Production on Thu Jul 12 09:41:45 2018
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> C:\oraclexe\app\oracle\product\11.2.0\server
+SP2-0024: Nothing to change.
+SQL> connect system/orcl11g
+Connected.
+SQL> CREATE TABLE Student_Master
+  2  (Student_code NUMBER(4),
+  3  Student_name VARCHAR2(20),
+  4  Student_dob DATE,
+  5  Address VARCHAR2(30)
+  6  );
+
+Table created.
+
+SQL> DESC Student_Master
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_CODE                                       NUMBER(4)
+ STUDENT_NAME                                       VARCHAR2(20)
+ STUDENT_DOB                                        DATE
+ ADDRESS                                            VARCHAR2(30)
+
+SQL> CREATE TABLE Department_Master
+  2  (
+  3  Dept_Code NUMBER(2) CONSTRAINT Dept_Code_Pk PRIMARY KEY,
+  4  Dept_Name VARCHAR2(30) NOT NULL,
+  5  );
+)
+*
+ERROR at line 5:
+ORA-00904: : invalid identifier
+
+
+SQL> CREATE TABLE Department_Master
+  2  (
+  3  Dept_Code NUMBER(2) CONSTRAINT Dept_Code_Pk PRIMARY KEY,
+  4  Dept_Name VARCHAR2(30) NOT NULL
+  5  );
+
+Table created.
+
+SQL> DESC Department_Master
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_CODE                                 NOT NULL NUMBER(2)
+ DEPT_NAME                                 NOT NULL VARCHAR2(30)
+
+SQL> INSERT INTO Department_Master(Dept_Code, Dept_Name)
+  2  VALUES(null,null);
+VALUES(null,null)
+       *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SYSTEM"."DEPARTMENT_MASTER"."DEPT_CODE")
+
+
+SQL> INSERT INTO Department_Master(Dept_Code, Dept_Name)
+  2  VALUES(10,null);
+VALUES(10,null)
+          *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SYSTEM"."DEPARTMENT_MASTER"."DEPT_NAME")
+
+
+SQL> INSERT INTO Department_Master(Dept_Code, Dept_Name)
+  2  VALUES(10,'HR');
+
+1 row created.
+
+SQL> COMMIT
+  2  ;
+
+Commit complete.
+
+SQL> INSERT INTO Department_Master(Dept_Code, Dept_Name)
+  2  VALUES(20,'HR');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT* FROM Department_Master;
+
+ DEPT_CODE DEPT_NAME
+---------- ------------------------------
+        10 HR
+        20 HR
+
+SQL> CREATE TABLE Staff_Master
+  2  (
+  3  Staff_code NUMBER(4) CONSTRAINT Staff_Code_Pk PRIMARY KEY,
+  4  Staff_Name VARCHAR2(30) NOT NULL,
+  5  EmailId VARCHAR2(40) CONSTRAINT Email_uk UNIQUE,
+  6  HireDate DATE CONSTRAINT HireDate_DF DEFAULT SYSDATE,
+  7  Dept_Code NUMBER(20) CONSTRAINT Dept_Code_FK REFERENCES Department_Master(Dept_Code)
+  8  );
+HireDate DATE CONSTRAINT HireDate_DF DEFAULT SYSDATE,
+              *
+ERROR at line 6:
+ORA-02253: constraint specification not allowed here
+
+
+SQL> CREATE TABLE Staff_Master
+  2  (
+  3  Staff_code NUMBER(4) CONSTRAINT Staff_Code_Pk PRIMARY KEY,
+  4  Staff_Name VARCHAR2(30) NOT NULL,
+  5  EmailId VARCHAR2(40) CONSTRAINT Email_uk UNIQUE,
+  6  HireDate DATE DEFAULT SYSDATE,
+  7  Dept_Code NUMBER(20) CONSTRAINT Dept_Code_FK REFERENCES Department_MAster(Dept_Code)
+  8  );
+
+Table created.
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (null,null,null,null,null);
+VALUES (null,null,null,null,null)
+        *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SYSTEM"."STAFF_MASTER"."STAFF_CODE")
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1001,null,null,null,null);
+VALUES (1001,null,null,null,null)
+             *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SYSTEM"."STAFF_MASTER"."STAFF_NAME")
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1001,'Robert',null,null,null);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1002,'Chris',null,null,null);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1003,'Natalie',natalie1234@gmail.com,null,null);
+INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+*
+ERROR at line 1:
+ORA-04054: database link GMAIL.COM does not exist
+
+
+SQL>
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1003,'Natalie',natalie1234@cg.com,null,null);
+INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+*
+ERROR at line 1:
+ORA-04054: database link CG.COM does not exist
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1003,'Natalie','natalie1234@cg.com',null,null);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1004,'Sara','sara1234@cg.com',12-04-2015,10);
+VALUES (1004,'Sara','sara1234@cg.com',12-04-2015,10)
+                                           *
+ERROR at line 2:
+ORA-00932: inconsistent datatypes: expected DATE got NUMBER
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1004,'Sara','sara1234@cg.com',12-JUL-2015,10);
+VALUES (1004,'Sara','sara1234@cg.com',12-JUL-2015,10)
+                                         *
+ERROR at line 2:
+ORA-00984: column not allowed here
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1004,'Sara','sara1234@cg.com','12-JUL-2015',10);
+
+1 row created.
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1005,'Suresh','suresh1234@cg.com',10);
+VALUES (1005,'Suresh','suresh1234@cg.com',10)
+*
+ERROR at line 2:
+ORA-00947: not enough values
+
+
+SQL> INSERT INTO Staff_Master(Staff_Code, Staff_Name, EmailId, HireDate, Dept_Code)
+  2  VALUES (1005,'Suresh','suresh1234@cg.com',,10);
+VALUES (1005,'Suresh','suresh1234@cg.com',,10)
+                                          *
+ERROR at line 2:
+ORA-00936: missing expression
+
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT * FROM Staff_Master;
+
+STAFF_CODE STAFF_NAME
+---------- ------------------------------
+EMAILID                                  HIREDATE   DEPT_CODE
+---------------------------------------- --------- ----------
+      1001 Robert
+
+
+      1002 Chris
+
+
+      1003 Natalie
+natalie1234@cg.com
+
+
+STAFF_CODE STAFF_NAME
+---------- ------------------------------
+EMAILID                                  HIREDATE   DEPT_CODE
+---------------------------------------- --------- ----------
+      1004 Sara
+sara1234@cg.com                          12-JUL-15         10
+
+
+SQL> CREATE TABLE Staff_Master_Dept_10
+  2  AS
+  3  Staff_Code,Staff_Name,Dept_Code
+  4  FROM Staff_Master
+  5  WHERE Dept_Code=10;
+Staff_Code,Staff_Name,Dept_Code
+*
+ERROR at line 3:
+ORA-00928: missing SELECT keyword
+
+
+SQL> CREATE TABLE Staff_Master_Dept_10
+  2  AS
+  3  Staff_Code,Staff_Name,Dept_Code
+  4  FROM Staff_Master
+  5  SELECT * FROM Staff_Master;
+Staff_Code,Staff_Name,Dept_Code
+*
+ERROR at line 3:
+ORA-00928: missing SELECT keyword
+
+
+SQL> ALTER TABLE Student_Master
+  2  ADD CONSTRAINT Student_Code_PK PRIMARY KEY(Stud_Code);
+ADD CONSTRAINT Student_Code_PK PRIMARY KEY(Stud_Code)
+                                           *
+ERROR at line 2:
+ORA-00904: "STUD_CODE": invalid identifier
+
+
+SQL> ADD CONSTRAINT Student_Code_PK PRIMARY KEY(Student_Code);
+SP2-0734: unknown command beginning "ADD CONSTR..." - rest of line ignored.
+SQL> ALTER TABLE Student_Master
+  2  ADD CONSTRAINT Student_Code_PK PRIMARY KEY(Student_Code);
+
+Table altered.
+
+SQL> ALTER TABLE Student_Master
+  2  ADD City VARCHAR(20);
+
+Table altered.
+
+SQL> ALTER TABLE Student_Master
+  2  ADD CONSTRAINT City_Ck CHECK (City IN ('Pune', 'Mumbai', 'Bangalore'));
+
+Table altered.
+
+SQL> ALTER TABLE Student_Master
+  2  MODIFY CONSTRAINT City_Ck CHECK (City IN ('pune', 'mumbai', 'bangalore', 'chennai', 'kolkata'));
+MODIFY CONSTRAINT City_Ck CHECK (City IN ('pune', 'mumbai', 'bangalore', 'chennai', 'kolkata'))
+                          *
+ERROR at line 2:
+ORA-00933: SQL command not properly ended
+
+
+SQL> desc Student_Master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_CODE                              NOT NULL NUMBER(4)
+ STUDENT_NAME                                       VARCHAR2(20)
+ STUDENT_DOB                                        DATE
+ ADDRESS                                            VARCHAR2(30)
+ CITY                                               VARCHAR2(20)
+
+SQL> ALTER Student_Master
+  2  MODIFY Student_Name VARCHAR(40);
+ALTER Student_Master
+      *
+ERROR at line 1:
+ORA-00940: invalid ALTER command
+
+
+SQL> ALTER TABLE Student_Master
+  2  MODIFY Student_Name VARCHAR(40);
+
+Table altered.
+
+SQL> DESC sTUDENT_Master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_CODE                              NOT NULL NUMBER(4)
+ STUDENT_NAME                                       VARCHAR2(40)
+ STUDENT_DOB                                        DATE
+ ADDRESS                                            VARCHAR2(30)
+ CITY                                               VARCHAR2(20)
+
+SQL> INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+  2  VALUES (1001,'Jhon','20-Apr-1997','ABC','ABC');
+INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+*
+ERROR at line 1:
+ORA-02290: check constraint (SYSTEM.CITY_CK) violated
+
+
+SQL> INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+  2  VALUES (1001,'Jhon','20-Apr-1997','ABC','Bangalore');
+
+1 row created.
+
+SQL> ALTER TABLE Student_Master
+  2  DISABLE CONSTRAINT City_Ck;
+
+Table altered.
+
+SQL> INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+  2  VALUES (1001,'Jhon','20-Apr-1997','ABC','ABC');
+INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SYSTEM.STUDENT_CODE_PK) violated
+
+
+SQL> INSERT INTO Student_Master (Student_Code, Student_Name, Student_dob, Address, City)
+  2  VALUES (1002,'Evans','20-Apr-1997','ABC','ABC');
+
+1 row created.
+
+SQL> COMMIT;
+
+Commit complete.
+
+SQL> SELECT Table_Name
+  2  FROM User_Tables;
+
+TABLE_NAME
+------------------------------
+LOGMNR_PARAMETER$
+LOGMNR_SESSION$
+MVIEW$_ADV_WORKLOAD
+MVIEW$_ADV_BASETABLE
+MVIEW$_ADV_SQLDEPEND
+MVIEW$_ADV_PRETTY
+MVIEW$_ADV_TEMP
+MVIEW$_ADV_FILTER
+MVIEW$_ADV_LOG
+MVIEW$_ADV_FILTERINSTANCE
+MVIEW$_ADV_LEVEL
+
+TABLE_NAME
+------------------------------
+MVIEW$_ADV_ROLLUP
+MVIEW$_ADV_AJG
+MVIEW$_ADV_FJG
+MVIEW$_ADV_GC
+MVIEW$_ADV_CLIQUE
+MVIEW$_ADV_ELIGIBLE
+MVIEW$_ADV_OUTPUT
+MVIEW$_ADV_EXCEPTIONS
+MVIEW$_ADV_PARAMETERS
+MVIEW$_ADV_INFO
+MVIEW$_ADV_JOURNAL
+
+TABLE_NAME
+------------------------------
+MVIEW$_ADV_PLAN
+AQ$_QUEUE_TABLES
+AQ$_QUEUES
+AQ$_SCHEDULES
+AQ$_INTERNET_AGENTS
+AQ$_INTERNET_AGENT_PRIVS
+DEF$_ERROR
+DEF$_DESTINATION
+DEF$_CALLDEST
+DEF$_DEFAULTDEST
+DEF$_LOB
+
+TABLE_NAME
+------------------------------
+DEF$_PROPAGATOR
+DEF$_ORIGIN
+DEF$_PUSHED_TRANSACTIONS
+REPCAT$_REPCAT
+REPCAT$_FLAVORS
+REPCAT$_REPSCHEMA
+REPCAT$_SNAPGROUP
+REPCAT$_REPOBJECT
+REPCAT$_REPCOLUMN
+REPCAT$_KEY_COLUMNS
+REPCAT$_GENERATED
+
+TABLE_NAME
+------------------------------
+REPCAT$_REPPROP
+REPCAT$_REPCATLOG
+REPCAT$_DDL
+REPCAT$_REPGROUP_PRIVS
+REPCAT$_PRIORITY_GROUP
+REPCAT$_PRIORITY
+REPCAT$_COLUMN_GROUP
+REPCAT$_GROUPED_COLUMN
+REPCAT$_CONFLICT
+REPCAT$_RESOLUTION_METHOD
+REPCAT$_RESOLUTION
+
+TABLE_NAME
+------------------------------
+REPCAT$_RESOLUTION_STATISTICS
+REPCAT$_RESOL_STATS_CONTROL
+REPCAT$_PARAMETER_COLUMN
+REPCAT$_AUDIT_ATTRIBUTE
+REPCAT$_AUDIT_COLUMN
+REPCAT$_FLAVOR_OBJECTS
+REPCAT$_TEMPLATE_STATUS
+REPCAT$_TEMPLATE_TYPES
+REPCAT$_REFRESH_TEMPLATES
+REPCAT$_USER_AUTHORIZATIONS
+REPCAT$_OBJECT_TYPES
+
+TABLE_NAME
+------------------------------
+REPCAT$_TEMPLATE_REFGROUPS
+REPCAT$_TEMPLATE_OBJECTS
+REPCAT$_TEMPLATE_PARMS
+REPCAT$_OBJECT_PARMS
+REPCAT$_USER_PARM_VALUES
+REPCAT$_TEMPLATE_SITES
+REPCAT$_SITE_OBJECTS
+REPCAT$_RUNTIME_PARMS
+REPCAT$_TEMPLATE_TARGETS
+REPCAT$_EXCEPTIONS
+REPCAT$_INSTANTIATION_DDL
+
+TABLE_NAME
+------------------------------
+REPCAT$_EXTENSION
+REPCAT$_SITES_NEW
+LOGSTDBY$PARAMETERS
+LOGSTDBY$EVENTS
+LOGSTDBY$APPLY_MILESTONE
+LOGSTDBY$SCN
+LOGSTDBY$FLASHBACK_SCN
+LOGSTDBY$PLSQL
+LOGSTDBY$SKIP_TRANSACTION
+LOGSTDBY$SKIP
+LOGSTDBY$SKIP_SUPPORT
+
+TABLE_NAME
+------------------------------
+LOGSTDBY$HISTORY
+LOGSTDBY$EDS_TABLES
+DEF$_AQCALL
+DEF$_AQERROR
+SQLPLUS_PRODUCT_PROFILE
+HELP
+STUDENT_MASTER
+DEPARTMENT_MASTER
+STAFF_MASTER
+LOGMNR_GT_TAB_INCLUDE$
+LOGMNR_GT_USER_INCLUDE$
+
+TABLE_NAME
+------------------------------
+LOGMNR_GT_XID_INCLUDE$
+LOGMNRT_MDDL$
+OL$
+OL$HINTS
+OL$NODES
+LOGMNR_DICTSTATE$
+LOGMNRC_GTLO
+LOGMNRC_GTCS
+LOGMNRC_GSII
+LOGMNRC_GSBA
+LOGMNR_SEED$
+
+TABLE_NAME
+------------------------------
+LOGMNR_DICTIONARY$
+LOGMNR_OBJ$
+LOGMNR_TAB$
+LOGMNR_COL$
+LOGMNR_ATTRCOL$
+LOGMNR_TS$
+LOGMNR_IND$
+LOGMNR_USER$
+LOGMNR_TABPART$
+LOGMNR_TABSUBPART$
+LOGMNR_TABCOMPART$
+
+TABLE_NAME
+------------------------------
+LOGMNR_TYPE$
+LOGMNR_COLTYPE$
+LOGMNR_ATTRIBUTE$
+LOGMNR_LOB$
+LOGMNR_CDEF$
+LOGMNR_CCOL$
+LOGMNR_ICOL$
+LOGMNR_LOBFRAG$
+LOGMNR_INDPART$
+LOGMNR_INDSUBPART$
+LOGMNR_INDCOMPART$
+
+TABLE_NAME
+------------------------------
+LOGMNR_LOGMNR_BUILDLOG
+LOGMNR_NTAB$
+LOGMNR_OPQTYPE$
+LOGMNR_SUBCOLTYPE$
+LOGMNR_KOPM$
+LOGMNR_PROPS$
+LOGMNR_ENC$
+LOGMNR_REFCON$
+LOGMNR_PARTOBJ$
+LOGMNRP_CTAS_PART_MAP
+LOGSTDBY$APPLY_PROGRESS
+
+TABLE_NAME
+------------------------------
+LOGMNR_INTEGRATED_SPILL$
+LOGMNR_PROCESSED_LOG$
+LOGMNR_UID$
+LOGMNRC_DBNAME_UID_MAP
+LOGMNR_LOG$
+LOGMNR_ERROR$
+LOGMNR_RESTART_CKPT$
+LOGMNR_GLOBAL$
+LOGMNR_SESSION_EVOLVE$
+LOGMNR_FILTER$
+LOGMNR_AGE_SPILL$
+
+TABLE_NAME
+------------------------------
+LOGMNR_SPILL$
+LOGMNR_RESTART_CKPT_TXINFO$
+LOGMNR_SESSION_ACTIONS$
+
+157 rows selected.
+
+SQL> SELECT object_name, object_type
+  2  FROM user_objects;
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SESSION_EVOLVE$
+TABLE
+
+LOGMNR_SESSION_EVOLVE$_PK
+INDEX
+
+LOGMNR_EVOLVE_SEQ$
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SEQ$
+SEQUENCE
+
+LOGMNR_UIDS$
+SEQUENCE
+
+LOGMNR_GLOBAL$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_GT_TAB_INCLUDE$
+TABLE
+
+LOGMNR_GT_USER_INCLUDE$
+TABLE
+
+LOGMNR_GT_XID_INCLUDE$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_UID$
+TABLE
+
+LOGMNR_UID$_PK
+INDEX
+
+LOGMNRC_DBNAME_UID_MAP
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_DBNAME_UID_MAP_PK
+INDEX
+
+LOGMNR_LOG$
+TABLE
+
+LOGMNR_LOG$_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_LOG$_FLAGS
+INDEX
+
+LOGMNR_LOG$_FIRST_CHANGE#
+INDEX
+
+LOGMNR_LOG$_RECID
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_PROCESSED_LOG$
+TABLE
+
+LOGMNR_PROCESSED_LOG$_PK
+INDEX
+
+LOGMNR_SPILL$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SPILL$_PK
+INDEX
+
+SYS_LOB0000001104C00010$$
+LOB
+
+LOGMNR_AGE_SPILL$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_AGE_SPILL$_PK
+INDEX
+
+SYS_LOB0000001108C00008$$
+LOB
+
+LOGMNR_RESTART_CKPT_TXINFO$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_RESTART_CKPT_TXINFO$_PK
+INDEX
+
+SYS_LOB0000001112C00011$$
+LOB
+
+LOGMNR_ERROR$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_RESTART_CKPT$
+TABLE
+
+LOGMNR_RESTART_CKPT$_PK
+INDEX
+
+SYS_LOB0000001117C00012$$
+LOB
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000001117C00009$$
+LOB
+
+LOGMNR_INTEGRATED_SPILL$
+TABLE
+
+LOGMNR_INTEG_SPILL$_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000001123C00009$$
+LOB
+
+LOGMNR_FILTER$
+TABLE
+
+LOGMNR_SESSION_ACTIONS$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SESSION_ACTION$_PK
+INDEX
+
+LOGMNR_PARAMETER$
+TABLE
+
+LOGMNR_PARAMETER_INDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SESSION$
+TABLE
+
+LOGMNR_SESSION_PK
+INDEX
+
+LOGMNR_SESSION_UK1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRT_MDDL$
+TABLE
+
+LOGMNRT_MDDL$_PK
+INDEX
+
+SYSCATALOG
+SYNONYM
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+CATALOG
+SYNONYM
+
+TAB
+SYNONYM
+
+COL
+SYNONYM
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+TABQUOTAS
+SYNONYM
+
+SYSFILES
+SYNONYM
+
+PUBLICSYN
+SYNONYM
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_WORKLOAD
+TABLE
+
+MVIEW$_ADV_WORKLOAD_PK
+INDEX
+
+MVIEW$_ADV_WORKLOAD_IDX_01
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_BASETABLE
+TABLE
+
+MVIEW$_ADV_BASETABLE_IDX_01
+INDEX
+
+MVIEW$_ADV_SQLDEPEND
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_SQLDEPEND_IDX_01
+INDEX
+
+MVIEW$_ADV_PRETTY
+TABLE
+
+MVIEW$_ADV_PRETTY_IDX_01
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_TEMP
+TABLE
+
+MVIEW$_ADV_TEMP_IDX_01
+INDEX
+
+MVIEW$_ADV_FILTER
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_FILTER_PK
+INDEX
+
+MVIEW$_ADV_LOG
+TABLE
+
+MVIEW$_ADV_LOG_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_FILTERINSTANCE
+TABLE
+
+MVIEW$_ADV_LEVEL
+TABLE
+
+MVIEW$_ADV_LEVEL_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_ROLLUP
+TABLE
+
+MVIEW$_ADV_ROLLUP_PK
+INDEX
+
+MVIEW$_ADV_AJG
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_AJG_PK
+INDEX
+
+MVIEW$_ADV_FJG
+TABLE
+
+MVIEW$_ADV_FJG_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_GC
+TABLE
+
+MVIEW$_ADV_GC_PK
+INDEX
+
+MVIEW$_ADV_CLIQUE
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_CLIQUE_PK
+INDEX
+
+MVIEW$_ADV_ELIGIBLE
+TABLE
+
+MVIEW$_ADV_ELIGIBLE_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_OUTPUT
+TABLE
+
+MVIEW$_ADV_OUTPUT_PK
+INDEX
+
+MVIEW$_ADV_EXCEPTIONS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_PARAMETERS
+TABLE
+
+MVIEW$_ADV_PARAMETERS_PK
+INDEX
+
+MVIEW$_ADV_INFO
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_INFO_PK
+INDEX
+
+MVIEW$_ADV_JOURNAL
+TABLE
+
+MVIEW$_ADV_JOURNAL_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW$_ADV_PLAN
+TABLE
+
+MVIEW$_ADVSEQ_GENERIC
+SEQUENCE
+
+MVIEW$_ADVSEQ_ID
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW_WORKLOAD
+VIEW
+
+MVIEW_FILTER
+VIEW
+
+MVIEW_LOG
+VIEW
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW_FILTERINSTANCE
+VIEW
+
+MVIEW_RECOMMENDATIONS
+VIEW
+
+MVIEW_EVALUATIONS
+VIEW
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+MVIEW_EXCEPTIONS
+VIEW
+
+REPCAT$_OBJECT_NULL_VECTOR
+TYPE
+
+AQ$_QUEUE_TABLES
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$_QUEUE_TABLES_PRIMARY
+INDEX
+
+I1_QUEUE_TABLES
+INDEX
+
+AQ$_QUEUES
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$_QUEUES_PRIMARY
+INDEX
+
+SYS_LOB0000005687C00012$$
+LOB
+
+AQ$_QUEUES_CHECK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+I1_QUEUES
+INDEX
+
+AQ$_SCHEDULES
+TABLE
+
+AQ$_SCHEDULES_PRIMARY
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$_SCHEDULES_CHECK
+INDEX
+
+AQ$_INTERNET_AGENTS
+TABLE
+
+SYS_C001694
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$_INTERNET_AGENT_PRIVS
+TABLE
+
+UNQ_PAIRS
+INDEX
+
+OL$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+OL$HINTS
+TABLE
+
+SYS_LOB0000006053C00021$$
+LOB
+
+OL$NODES
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+OL$NAME
+INDEX
+
+OL$SIGNATURE
+INDEX
+
+OL$HNT_NUM
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_ERROR
+TABLE
+
+DEF$_ERROR_PRIMARY
+INDEX
+
+DEF$_DESTINATION
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_DESTINATION_PRIMARY
+INDEX
+
+DEF$_CALLDEST
+TABLE
+
+DEF$_CALLDEST_PRIMARY
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_CALLDEST_N2
+INDEX
+
+DEF$_DEFAULTDEST
+TABLE
+
+DEF$_DEFAULTDEST_PRIMARY
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_LOB
+TABLE
+
+DEF$_LOB_PRIMARY
+INDEX
+
+SYS_LOB0000006939C00005$$
+LOB
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000006939C00004$$
+LOB
+
+SYS_LOB0000006939C00003$$
+LOB
+
+DEF$_LOB_N1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_PROPAGATOR
+TABLE
+
+DEF$_PROPAGATOR_PRIMARY
+INDEX
+
+DEF$_ORIGIN
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEF$_PUSHED_TRANSACTIONS
+TABLE
+
+DEF$_PUSHED_TRAN_PRIMARY
+INDEX
+
+REPCAT$_REPCAT
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPCAT_PRIMARY
+INDEX
+
+REPCAT$_FLAVORS
+TABLE
+
+REPCAT$_FLAVORS_UNQ1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_FLAVORS_FNAME
+INDEX
+
+REPCAT$_FLAVORS_GNAME
+INDEX
+
+REPCAT$_FLAVORS_FK1_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_FLAVORS_S
+SEQUENCE
+
+REPCAT$_FLAVOR_NAME_S
+SEQUENCE
+
+REPCAT$_REPSCHEMA
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPSCHEMA_PRIMARY
+INDEX
+
+REPCAT$_REPSCHEMA_DEST_IDX
+INDEX
+
+REPCAT$_REPSCHEMA_PRNT_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_SNAPGROUP
+TABLE
+
+I_REPCAT$_SNAPGROUP1
+INDEX
+
+REPCAT$_REPOBJECT
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPOBJECT_PRIMARY
+INDEX
+
+REPCAT$_REPOBJECT_GNAME
+INDEX
+
+REPCAT$_REPOBJECT_PRNT_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPCOLUMN
+TABLE
+
+REPCAT$_REPCOLUMN_PK
+INDEX
+
+REPCAT$_REPCOLUMN_FK_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_KEY_COLUMNS
+TABLE
+
+REPCAT$_KEY_COLUMNS_PRIMARY
+INDEX
+
+REPCAT$_KEY_COLUMNS_PRNT_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_GENERATED
+TABLE
+
+REPCAT$_REPGEN_PRIMARY
+INDEX
+
+REPCAT$_GENERATED_N1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPGEN_PRNT_IDX
+INDEX
+
+REPCAT$_REPPROP
+TABLE
+
+REPCAT$_REPPROP_PRIMARY
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPPROP_DBLINK_HOW
+INDEX
+
+REPCAT$_REPPROP_KEY_INDEX
+INDEX
+
+REPCAT$_REPPROP_PRNT_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPPROP_PRNT2_IDX
+INDEX
+
+REPCAT$_REPPROP_KEY
+SEQUENCE
+
+REPCAT$_REPCATLOG
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPCATLOG_PRIMARY
+INDEX
+
+REPCAT$_REPCATLOG_GNAME
+INDEX
+
+REPCAT$_DDL
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_DDL_INDEX
+INDEX
+
+REPCAT$_DDL
+INDEX
+
+REPCAT$_REPGROUP_PRIVS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REPGROUP_PRIVS_UK
+INDEX
+
+REPCAT$_REPGROUP_PRIVS_N1
+INDEX
+
+REPCAT$_REPGROUP_PRIVS_FK_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT_LOG_SEQUENCE
+SEQUENCE
+
+REPCAT$_PRIORITY_GROUP
+TABLE
+
+REPCAT$_PRIORITY_GROUP_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_PRIORITY_GROUP_U1
+INDEX
+
+REPCAT$_PRIORITY
+TABLE
+
+REPCAT$_PRIORITY_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_PRIORITY_F1_IDX
+INDEX
+
+REPCAT$_COLUMN_GROUP
+TABLE
+
+REPCAT$_COLUMN_GROUP_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_GROUPED_COLUMN
+TABLE
+
+REPCAT$_GROUPED_COLUMN_PK
+INDEX
+
+REPCAT$_GROUPED_COLUMN_F1_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_CONFLICT
+TABLE
+
+REPCAT$_CONFLICT_PK
+INDEX
+
+REPCAT$_RESOLUTION_METHOD
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_RESOL_METHOD_PK
+INDEX
+
+REPCAT$_RESOLUTION
+TABLE
+
+REPCAT$_RESOLUTION_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_RESOLUTION_F3_IDX
+INDEX
+
+REPCAT$_RESOLUTION_IDX2
+INDEX
+
+REPCAT$_RESOLUTION_STATISTICS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_RESOLUTION_STATS_N1
+INDEX
+
+REPCAT$_RESOL_STATS_CONTROL
+TABLE
+
+REPCAT$_RESOL_STATS_CTRL_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_PARAMETER_COLUMN
+TABLE
+
+REPCAT$_PARAMETER_COLUMN_PK
+INDEX
+
+REPCAT$_PARAMETER_COLUMN_F1_I
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_AUDIT_ATTRIBUTE
+TABLE
+
+REPCAT$_AUDIT_ATTRIBUTE_PK
+INDEX
+
+REPCAT$_AUDIT_COLUMN
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_AUDIT_COLUMN_PK
+INDEX
+
+REPCAT$_AUDIT_COLUMN_F1_IDX
+INDEX
+
+REPCAT$_AUDIT_COLUMN_F2_IDX
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_FLAVOR_OBJECTS
+TABLE
+
+REPCAT$_FLAVOR_OBJECTS_PK
+INDEX
+
+REPCAT$_FLAVOR_OBJECTS_FG
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_FLAVOR_OBJECTS_FK1_IDX
+INDEX
+
+REPCAT$_FLAVOR_OBJECTS_FK2_IDX
+INDEX
+
+ORA$_SYS_REP_AUTH
+PROCEDURE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_STATUS
+TABLE
+
+REPCAT$_TEMPLATE_STATUS_PK
+INDEX
+
+REPCAT$_TEMPLATE_TYPES
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_TYPES_PK
+INDEX
+
+REPCAT$_REFRESH_TEMPLATES
+TABLE
+
+REPCAT$_REFRESH_TEMPLATES_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_REFRESH_TEMPLATES_U1
+INDEX
+
+REPCAT$_REFRESH_TEMPLATES_S
+SEQUENCE
+
+REPCAT$_USER_AUTHORIZATIONS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_USER_AUTHORIZATIONS_PK
+INDEX
+
+REPCAT$_USER_AUTHORIZATIONS_U1
+INDEX
+
+REPCAT$_USER_AUTHORIZATIONS_N1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_USER_AUTHORIZATIONS_S
+SEQUENCE
+
+REPCAT$_OBJECT_TYPES
+TABLE
+
+REPCAT$_OBJECT_TYPE_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_REFGROUPS
+TABLE
+
+REPCAT$_TEMPLATE_REFGROUPS_PK
+INDEX
+
+REPCAT$_TEMPLATE_REFGROUPS_S
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_REFGROUPS_N1
+INDEX
+
+REPCAT$_TEMPLATE_REFGROUPS_N2
+INDEX
+
+REPCAT$_TEMPLATE_OBJECTS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_OBJECTS_PK
+INDEX
+
+SYS_LOB0000007295C00006$$
+LOB
+
+REPCAT$_TEMPLATE_OBJECTS_U1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_OBJECTS_N1
+INDEX
+
+REPCAT$_TEMPLATE_OBJECTS_S
+SEQUENCE
+
+REPCAT$_TEMPLATE_PARMS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_PARMS_PK
+INDEX
+
+SYS_LOB0000007308C00004$$
+LOB
+
+REPCAT$_TEMPLATE_PARMS_U1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_PARMS_S
+SEQUENCE
+
+REPCAT$_OBJECT_PARMS
+TABLE
+
+REPCAT$_OBJECT_PARMS_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_OBJECT_PARMS_N2
+INDEX
+
+REPCAT$_USER_PARM_VALUES
+TABLE
+
+REPCAT$_USER_PARM_VALUES_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000007323C00004$$
+LOB
+
+REPCAT$_USER_PARM_VALUES_U1
+INDEX
+
+REPCAT$_USER_PARM_VALUES_S
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_SITES
+TABLE
+
+REPCAT$_TEMPLATE_SITES_PK
+INDEX
+
+REPCAT$_TEMPLATE_SITES_U1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_SITES_S
+SEQUENCE
+
+REPCAT$_SITE_OBJECTS
+TABLE
+
+REPCAT$_SITE_OBJECTS_U1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_SITE_OBJECTS_N1
+INDEX
+
+REPCAT$_TEMP_OUTPUT_S
+SEQUENCE
+
+REPCAT$_RUNTIME_PARMS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000007349C00003$$
+LOB
+
+REPCAT$_RUNTIME_PARMS_PK
+INDEX
+
+REPCAT$_RUNTIME_PARMS_S
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_TARGETS
+TABLE
+
+TEMPLATE$_TARGETS_PK
+INDEX
+
+TEMPLATE$_TARGETS_S
+SEQUENCE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_TEMPLATE_TARGETS_U1
+INDEX
+
+REPCAT$_EXCEPTIONS
+TABLE
+
+REPCAT$_EXCEPTIONS_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000007360C00003$$
+LOB
+
+REPCAT$_EXCEPTIONS_S
+SEQUENCE
+
+REPCAT$_INSTANTIATION_DDL
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_INSTANTIATION_DDL_PK
+INDEX
+
+SYS_LOB0000007367C00002$$
+LOB
+
+REPCAT$_EXTENSION
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_C003081
+INDEX
+
+REPCAT$_SITES_NEW
+TABLE
+
+REPCAT$_SITES_NEW_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+REPCAT$_SITES_NEW_FK2_IDX
+INDEX
+
+REPCAT$_SITES_NEW_FK1_IDX
+INDEX
+
+REPCAT$_TEMPLATE_OBJECTS_N2
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_DICTSTATE$
+TABLE PARTITION
+
+LOGMNR_DICTSTATE$
+TABLE
+
+LOGMNRC_GTLO
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_GTLO
+TABLE
+
+LOGMNRC_GTLO_PK
+INDEX PARTITION
+
+LOGMNRC_GTLO_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_I2GTLO
+INDEX PARTITION
+
+LOGMNRC_I2GTLO
+INDEX
+
+LOGMNRC_I3GTLO
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_I3GTLO
+INDEX
+
+LOGMNRC_GTCS
+TABLE PARTITION
+
+LOGMNRC_GTCS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_GTCS_PK
+INDEX PARTITION
+
+LOGMNRC_GTCS_PK
+INDEX
+
+LOGMNRC_I2GTCS
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_I2GTCS
+INDEX
+
+LOGMNRC_GSII
+TABLE PARTITION
+
+LOGMNRC_GSII
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_GSII_PK
+INDEX PARTITION
+
+LOGMNRC_GSII_PK
+INDEX
+
+LOGMNRC_GSBA
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRC_GSBA
+TABLE
+
+LOGMNRC_GSBA_PK
+INDEX PARTITION
+
+LOGMNRC_GSBA_PK
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SEED$
+TABLE PARTITION
+
+LOGMNR_SEED$
+TABLE
+
+LOGMNR_I1SEED$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1SEED$
+INDEX
+
+LOGMNR_I2SEED$
+INDEX PARTITION
+
+LOGMNR_I2SEED$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_DICTIONARY$
+TABLE PARTITION
+
+LOGMNR_DICTIONARY$
+TABLE
+
+LOGMNR_I1DICTIONARY$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1DICTIONARY$
+INDEX
+
+LOGMNR_OBJ$
+TABLE PARTITION
+
+LOGMNR_OBJ$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1OBJ$
+INDEX PARTITION
+
+LOGMNR_I1OBJ$
+INDEX
+
+LOGMNR_I2OBJ$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2OBJ$
+INDEX
+
+LOGMNR_TAB$
+TABLE PARTITION
+
+LOGMNR_TAB$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TAB$
+INDEX PARTITION
+
+LOGMNR_I1TAB$
+INDEX
+
+LOGMNR_I2TAB$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2TAB$
+INDEX
+
+LOGMNR_COL$
+TABLE PARTITION
+
+LOGMNR_COL$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1COL$
+INDEX PARTITION
+
+LOGMNR_I1COL$
+INDEX
+
+LOGMNR_I2COL$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2COL$
+INDEX
+
+LOGMNR_I3COL$
+INDEX PARTITION
+
+LOGMNR_I3COL$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_ATTRCOL$
+TABLE PARTITION
+
+LOGMNR_ATTRCOL$
+TABLE
+
+LOGMNR_I1ATTRCOL$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1ATTRCOL$
+INDEX
+
+LOGMNR_TS$
+TABLE PARTITION
+
+LOGMNR_TS$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TS$
+INDEX PARTITION
+
+LOGMNR_I1TS$
+INDEX
+
+LOGMNR_IND$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_IND$
+TABLE
+
+LOGMNR_I1IND$
+INDEX PARTITION
+
+LOGMNR_I1IND$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2IND$
+INDEX PARTITION
+
+LOGMNR_I2IND$
+INDEX
+
+LOGMNR_USER$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_USER$
+TABLE
+
+LOGMNR_I1USER$
+INDEX PARTITION
+
+LOGMNR_I1USER$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_TABPART$
+TABLE PARTITION
+
+LOGMNR_TABPART$
+TABLE
+
+LOGMNR_I1TABPART$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TABPART$
+INDEX
+
+LOGMNR_I2TABPART$
+INDEX PARTITION
+
+LOGMNR_I2TABPART$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_TABSUBPART$
+TABLE PARTITION
+
+LOGMNR_TABSUBPART$
+TABLE
+
+LOGMNR_I1TABSUBPART$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TABSUBPART$
+INDEX
+
+LOGMNR_I2TABSUBPART$
+INDEX PARTITION
+
+LOGMNR_I2TABSUBPART$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_TABCOMPART$
+TABLE PARTITION
+
+LOGMNR_TABCOMPART$
+TABLE
+
+LOGMNR_I1TABCOMPART$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TABCOMPART$
+INDEX
+
+LOGMNR_I2TABCOMPART$
+INDEX PARTITION
+
+LOGMNR_I2TABCOMPART$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_TYPE$
+TABLE PARTITION
+
+LOGMNR_TYPE$
+TABLE
+
+LOGMNR_I1TYPE$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1TYPE$
+INDEX
+
+LOGMNR_COLTYPE$
+TABLE PARTITION
+
+LOGMNR_COLTYPE$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1COLTYPE$
+INDEX PARTITION
+
+LOGMNR_I1COLTYPE$
+INDEX
+
+LOGMNR_ATTRIBUTE$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_ATTRIBUTE$
+TABLE
+
+LOGMNR_I1ATTRIBUTE$
+INDEX PARTITION
+
+LOGMNR_I1ATTRIBUTE$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_LOB$
+TABLE PARTITION
+
+LOGMNR_LOB$
+TABLE
+
+LOGMNR_I1LOB$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1LOB$
+INDEX
+
+LOGMNR_CDEF$
+TABLE PARTITION
+
+LOGMNR_CDEF$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1CDEF$
+INDEX PARTITION
+
+LOGMNR_I1CDEF$
+INDEX
+
+LOGMNR_CCOL$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_CCOL$
+TABLE
+
+LOGMNR_I1CCOL$
+INDEX PARTITION
+
+LOGMNR_I1CCOL$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_ICOL$
+TABLE PARTITION
+
+LOGMNR_ICOL$
+TABLE
+
+LOGMNR_I1ICOL$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1ICOL$
+INDEX
+
+LOGMNR_LOBFRAG$
+TABLE PARTITION
+
+LOGMNR_LOBFRAG$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1LOBFRAG$
+INDEX PARTITION
+
+LOGMNR_I1LOBFRAG$
+INDEX
+
+LOGMNR_INDPART$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_INDPART$
+TABLE
+
+LOGMNR_I1INDPART$
+INDEX PARTITION
+
+LOGMNR_I1INDPART$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2INDPART$
+INDEX PARTITION
+
+LOGMNR_I2INDPART$
+INDEX
+
+LOGMNR_INDSUBPART$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_INDSUBPART$
+TABLE
+
+LOGMNR_I1INDSUBPART$
+INDEX PARTITION
+
+LOGMNR_I1INDSUBPART$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_INDCOMPART$
+TABLE PARTITION
+
+LOGMNR_INDCOMPART$
+TABLE
+
+LOGMNR_I1INDCOMPART$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1INDCOMPART$
+INDEX
+
+LOGMNR_LOGMNR_BUILDLOG
+TABLE PARTITION
+
+LOGMNR_LOGMNR_BUILDLOG
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1LOGMNR_BUILDLOG
+INDEX PARTITION
+
+LOGMNR_I1LOGMNR_BUILDLOG
+INDEX
+
+LOGMNR_NTAB$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_NTAB$
+TABLE
+
+LOGMNR_I1NTAB$
+INDEX PARTITION
+
+LOGMNR_I1NTAB$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I2NTAB$
+INDEX PARTITION
+
+LOGMNR_I2NTAB$
+INDEX
+
+LOGMNR_OPQTYPE$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_OPQTYPE$
+TABLE
+
+LOGMNR_I1OPQTYPE$
+INDEX PARTITION
+
+LOGMNR_I1OPQTYPE$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_SUBCOLTYPE$
+TABLE PARTITION
+
+LOGMNR_SUBCOLTYPE$
+TABLE
+
+LOGMNR_I1SUBCOLTYPE$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1SUBCOLTYPE$
+INDEX
+
+LOGMNR_KOPM$
+TABLE PARTITION
+
+LOGMNR_KOPM$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1KOPM$
+INDEX PARTITION
+
+LOGMNR_I1KOPM$
+INDEX
+
+LOGMNR_PROPS$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_PROPS$
+TABLE
+
+LOGMNR_I1PROPS$
+INDEX PARTITION
+
+LOGMNR_I1PROPS$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_ENC$
+TABLE PARTITION
+
+LOGMNR_ENC$
+TABLE
+
+LOGMNR_I1ENC$
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1ENC$
+INDEX
+
+LOGMNR_REFCON$
+TABLE PARTITION
+
+LOGMNR_REFCON$
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_I1REFCON$
+INDEX PARTITION
+
+LOGMNR_I1REFCON$
+INDEX
+
+LOGMNR_PARTOBJ$
+TABLE PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNR_PARTOBJ$
+TABLE
+
+LOGMNR_I1PARTOBJ$
+INDEX PARTITION
+
+LOGMNR_I1PARTOBJ$
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRP_CTAS_PART_MAP
+TABLE PARTITION
+
+LOGMNRP_CTAS_PART_MAP
+TABLE
+
+LOGMNRP_CTAS_PART_MAP_PK
+INDEX PARTITION
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGMNRP_CTAS_PART_MAP_PK
+INDEX
+
+LOGMNRP_CTAS_PART_MAP_I
+INDEX PARTITION
+
+LOGMNRP_CTAS_PART_MAP_I
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DBMS_REPCAT_AUTH
+PACKAGE
+
+LOGSTDBY$PARAMETERS
+TABLE
+
+LOGSTDBY$EVENTS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000010832C00009$$
+LOB
+
+LOGSTDBY$EVENTS_IND
+INDEX
+
+LOGSTDBY$EVENTS_IND_SCN
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGSTDBY$EVENTS_IND_XID
+INDEX
+
+LOGSTDBY$APPLY_PROGRESS
+TABLE PARTITION
+
+LOGSTDBY$APPLY_PROGRESS
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGSTDBY$APPLY_MILESTONE
+TABLE
+
+LOGSTDBY$SCN
+TABLE
+
+LOGSTDBY$FLASHBACK_SCN
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_C003346
+INDEX
+
+LOGSTDBY$PLSQL
+TABLE
+
+SYS_LOB0000010844C00003$$
+LOB
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGSTDBY$SKIP_TRANSACTION
+TABLE
+
+LOGSTDBY$SKIP
+TABLE
+
+LOGSTDBY$SKIP_IDX1
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGSTDBY$SKIP_IDX2
+INDEX
+
+LOGSTDBY$SKIP_SUPPORT
+TABLE
+
+LOGSTDBY$SKIP_IND
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+LOGSTDBY$HISTORY
+TABLE
+
+LOGSTDBY$EDS_TABLES
+TABLE
+
+LOGSTDBY$EDS_TABLES_PKEY
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DBMS_REPCAT_AUTH
+PACKAGE BODY
+
+DEF$_PROPAGATOR_TRIG
+TRIGGER
+
+DEF$_AQCALL
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_C003540
+INDEX
+
+SYS_LOB0000013050C00025$$
+LOB
+
+DEF$_AQERROR
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_C003543
+INDEX
+
+AQ$_DEF$_AQCALL_E
+QUEUE
+
+AQ$_DEF$_AQCALL_F
+VIEW
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$DEF$_AQCALL
+VIEW
+
+DEF$_AQCALL
+QUEUE
+
+DEF$_TRANORDER
+INDEX
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SYS_LOB0000013061C00025$$
+LOB
+
+AQ$_DEF$_AQERROR_E
+QUEUE
+
+AQ$_DEF$_AQERROR_F
+VIEW
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+AQ$DEF$_AQERROR
+VIEW
+
+DEF$_AQERROR
+QUEUE
+
+REPCATLOGTRIG
+TRIGGER
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+SQLPLUS_PRODUCT_PROFILE
+TABLE
+
+PRODUCT_PRIVS
+VIEW
+
+PRODUCT_USER_PROFILE
+SYNONYM
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+HELP
+TABLE
+
+HELP_TOPIC_SEQ
+INDEX
+
+STUDENT_MASTER
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+DEPARTMENT_MASTER
+TABLE
+
+DEPT_CODE_PK
+INDEX
+
+STAFF_MASTER
+TABLE
+
+
+OBJECT_NAME
+--------------------------------------------------------------------------------
+OBJECT_TYPE
+-------------------
+STAFF_CODE_PK
+INDEX
+
+EMAIL_UK
+INDEX
+
+STUDENT_CODE_PK
+INDEX
+
+
+534 rows selected.
+
+SQL> INSERT INTO Department_Master
+  2  VALUES (&Dept_Code);
+Enter value for dept_code: 30
+old   2: VALUES (&Dept_Code)
+new   2: VALUES (30)
+INSERT INTO Department_Master
+            *
+ERROR at line 1:
+ORA-00947: not enough values
+
+
+SQL> INSERT INTO Department_Master
+  2  VALUES (&Dept_Code,'&Dept_Name');
+Enter value for dept_code: 30
+Enter value for dept_name: 'Programmer'
+old   2: VALUES (&Dept_Code,'&Dept_Name')
+new   2: VALUES (30,''Programmer'')
+VALUES (30,''Programmer'')
+             *
+ERROR at line 2:
+ORA-00917: missing comma
+
+
+SQL> INSERT INTO Department_Master
+  2  VALUES (&Dept_Code,'&Dept_Name');
+Enter value for dept_code: 30
+Enter value for dept_name: Programmer
+old   2: VALUES (&Dept_Code,'&Dept_Name')
+new   2: VALUES (30,'Programmer')
+
+1 row created.
+
+SQL> CREATE TABLE Customer_Table
+  2  (
+  3  Customer_Id NUMBER(5),
+  4  Cust_Name VARCHAR2,
+  5  Cust_Name VARCHAR2,;
+Cust_Name VARCHAR2,
+                  *
+ERROR at line 4:
+ORA-00906: missing left parenthesis
+
+
+SQL> CREATE TABLE Customer_Table
+  2  (
+  3  Customer_Id NUMBER(5),
+  4  Cust_Name VARCHAR2(20),
+  5  Address_1 VARCHAR(30),
+  6  Address_2 VARCHAR(30)
+  7  );]
+  8  );
+);]
+ *
+ERROR at line 7:
+ORA-00911: invalid character
+
+
+SQL> CREATE TABLE Customer_Table
+  2  (
+  3  Customer_Id NUMBER(5),
+  4  Cust_Name VARCHAR2(20),
+  5  Address_1 VARCHAR(30),
+  6  Address_2 VARCHAR(30)
+  7  );
+
+Table created.
+
+SQL> ALTER TABLE Customer_Table
+  2  RENAME Cust_Name TO Customer_Name;
+RENAME Cust_Name TO Customer_Name
+       *
+ERROR at line 2:
+ORA-14155: missing PARTITION or SUBPARTITION keyword
+
+
+SQL> ALTER TABLE Customer_Table
+  2  RENAME COLUMN Cust_Name TO Customer_Name;
+
+Table altered.
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD CONSTRAINT Customer_Name_nn NOT NULL;
+ADD CONSTRAINT Customer_Name_nn NOT NULL
+                                *
+ERROR at line 2:
+ORA-00904: : invalid identifier
+
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD Customer_Name NOT NULL;
+ADD Customer_Name NOT NULL
+    *
+ERROR at line 2:
+ORA-02263: need to specify the datatype for this column
+
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD Customer_Name VARCHAR(20) NOT NULL;
+ADD Customer_Name VARCHAR(20) NOT NULL
+    *
+ERROR at line 2:
+ORA-01430: column being added already exists in table
+
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD CONSTRAINT Customer_Name_Pk PRIMARY KEY;
+ADD CONSTRAINT Customer_Name_Pk PRIMARY KEY
+                                          *
+ERROR at line 2:
+ORA-00906: missing left parenthesis
+
+
+SQL> ALTER TABLE Customer_Table
+  2  ADD CONSTRAINT Customer_Name_Pk PRIMARY KEY(Customer_Name);
+
+Table altered.
+
+SQL> desc Customer_Table;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTOMER_ID                                        NUMBER(5)
+ CUSTOMER_NAME                             NOT NULL VARCHAR2(20)
+ ADDRESS_1                                          VARCHAR2(30)
+ ADDRESS_2                                          VARCHAR2(30)
+
+SQL> commit;
+
+Commit complete.
+
+SQL>
