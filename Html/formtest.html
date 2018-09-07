@@ -1,0 +1,33 @@
+<html>
+<head></head>
+<body>
+	<form>
+		Employee Name<span style="color:red">*</span> : <input type="text" required placeholder="Enter Employee Name" pattern="[A-Z][A-Za-z\s]+" required
+		title="Name Should Start with capital letter and only Alphabets"/><br>
+		Age : <input type="number" min=18 max=60 step="1"/><br>
+		Mobile : <input type="text" pattern="\d{10}" required title="Mobile no. should contain only 10 digits" autofocus/><br>
+		Email : <input type="email" required/><br>
+		Location : <input type="text" list="locations" required/><br>
+		DOJ : <input type="date"/><br>
+		Search : <input type="search"/>
+		<br>
+		<input type="range" min="1" max="10"/>
+		<datalist id="locations">
+			<option value="Chennai">
+			<option value="Bangalore">
+			<option value="Hyderabad">
+			<option value="Pune">
+			<option value="Mumbai">
+			<option value="Noida">
+		</datalist>
+		<input type ="submit" value="Register"/>
+		<input type="reset" value="clear"/>
+	</form>
+	<audio controls>
+		<source  src="">
+		</audio>
+		<video controls width="100px" height= "100px">
+		<source src="">
+		</video>
+</body>
+</html>

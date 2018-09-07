@@ -1,0 +1,41 @@
+<html>
+<head>
+	<script>
+	var str="Hello World";
+	document.write(str.length);
+	document.write("<br>");
+	</script>
+	
+</head>
+<body>
+<script type="text/javascript">
+	var arr1=new Array("Chennai","Thiruvallur","Kanchipuram","Thirumazhisai","Thanjavur","Thiruvannamalai","Nammakal","Allaganallur","Krisnagiri");
+	var arr=new Array();
+	arr[0]="Chennai";
+	arr[1]=10;
+	arr[2]=new Date();
+	
+	var arr3=[2,7,5,97,56,87,43,9];
+	arr3.sort(function(a,b){return a-b;});
+	document.write(arr3);
+	document.write("<br>");
+	arr1.sort();
+	var arr2=["Chennai","Thiruvallur","Kanchipuram","Thirumazhisai","Thanjavur","Thiruvannamalai","Nammakal"];
+	var result=arr2.join("-");
+	document.write(result);
+	document.write("<br>");
+	var res=arr2.reverse();
+	document.write(res);
+	document.write("<br>");
+	for(var i=0;i<arr.length;i++){
+	document.write(arr[i]+"<br>");
+	
+	}
+	for(var j=0;j<arr1.length;j++){
+	
+	document.write(arr1[j]+"<br>");
+	}
+	</script>
+	
+</body>
+</html>

@@ -1,0 +1,56 @@
+<html>
+<head>
+	<script>
+	function myFinc(){
+	var res=document.forms[0].user.value;
+	alert(res);
+	newWin=window.open("http://www.bbc.com","BBC news","width=200,height=200");
+	}
+	function myFinc1(){
+	<!--var res=document.forms[1].user.value;alert(res);-->
+	newWin.moveBy(100,10);
+	}
+	function test(){
+	document.bgcolor="red";
+	}
+	function testFunc(){
+	alert("Hello From Test Function");
+	}
+	
+	function setT(){
+	id=setInterval(testFunc,3000);
+	}
+	function clearT(){
+	clearInterval(id);
+	}
+	</script>
+	
+	
+</head>
+<body>
+<script type="text/javascript">
+	var res=confirm("Do you want to continue");
+	var result=prompt("Enter your name");
+	
+	alert(res);
+	document.write("Welcome  "+result);
+	
+	</script>
+	<script type="text/javascript">
+	document.write("Hello World");
+	</script>
+	<form name="Form1">
+	user Name : <input type="text" name="user"/>  <!--//name or id should be given for all input element-->
+	</form>
+	<hr>
+	<form name="Form2">
+	User : <input type="text" name="user"/>
+	</form>
+	<button onclick="myFinc()">ClickMe</button>
+	<button onclick="myFinc1()">ClickMe1</button>
+	<button onclick="setT()">Set timeout</button>
+	<button onclick="clearT()">Clear timeout</button>
+	<button onclick="test()">color</button>
+	
+</body>
+</html>

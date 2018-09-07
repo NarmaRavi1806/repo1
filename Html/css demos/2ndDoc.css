@@ -1,0 +1,28 @@
+div{
+	background-color:lightblue;
+	height: 300px;
+	width: 200px;
+	text-decoration:underline;
+	text-transform:capitalize;
+	text-shadow:5px 5px 2px brown;
+	font-family:San serif;
+	font-size:20px;
+	font-style:italic;
+	font-weight:bold;
+	
+}
+h1{
+	/* color:red; */
+	color:rgb(0,200,0);
+}
+
+p{
+	text-indent:50px;
+}
+.p1{
+	color:red;
+	font-family:Aerial
+	border: 1px solid #27654;
+	word-wrap:break-word;
+	
+}

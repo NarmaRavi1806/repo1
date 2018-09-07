@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form Methods</title>
+</head>
+<body>
+<h1> Candidate Information </h1>
+<form action="mailto:lnd.in@capgemini.com" name="ab" method="post"
+enctype="multipart/form-data" >
+<table border="1" style="background-color:skyblue">
+<tr>
+<th><label for="name" > Name: </label></th>
+<td>
+<input type="text" SIZE="20" maxlength="15" required/></td> </tr>
+<tr>
+<th><label for="password" required>Password:</label></th>
+<td>
+<input type="password" size="20" maxlength="10"required/></td> </tr>
+<tr>
+<th><label for="date" required> Phone number:</label> </th>
+<td> <input type="text" size="10" min="10" maxlength="10" required /></td></tr>
+<tr>
+<th> Gender:</th>
+<td>
+<input type="radio" name="gender" value="gender"/> Male<br> 
+<input type="radio" name="gender" value="gender"/> Female
+</td></tr>
+
+<tr>
+<th><label for="date" required> Date of Birth: </label></th>
+<td>
+<input id="date" name="date" type="date" min="2007-08-14" max="2014-08-14" value="" required/></td>
+</tr>
+<tr>
+ <th><label for="email" required>Email:</label></th>
+<td><input id="email" name="email" type="email" required/></td>
+ </tr>
+<tr><th><label for="Course_name">Highest Qualification:</label></th>
+<td><input id="Course_name" name="Course_name" type="text" list="Course" required/></td>
+<td>
+<datalist id="Course">
+<option value="B.Tech">
+<option value="M.Tech">
+<option value="MBA">
+<option value="MCA">
+<option value="MSc.">
+<option value="MA">
+<option value="BSc.">
+</datalist></td>
+</tr>
+<tr><th>Courses Interested in:</th>
+<td> 
+<input  type="checkbox" name="java" value="grp1"/> Java
+<input type="checkbox" name="Html5" value="grp2"/> HTML5 
+<input type="checkbox" name="css3" value="grp3"/> CSS 3
+<input type="checkbox" name="AngularJS" value="oth"/> AngularJS
+<input type="checkbox" name="JQuery" value="oth"/> JQuery </td></tr>
+<tr><th>
+Comments:(Mention External Certification if any) </th>
+<td>
+<textarea name="comments" Rows="5" cols="40" tabindex="0" accesskey="A"></textarea>
+</td></tr>
+<tr><th>Upload Degree / External Certificate:</th>
+<td><input type="file" name="pic" accept="image/*" required/></td></tr>
+ <tr>
+<td align="right"><button type="submit" name="submit Information" value="Submit Information">Submit Information</button></td>
+<td align="left"><button type="reset" name="Clear" value="Clear">Clear</button></td>
+</tr>
+</table>
+<center><p style="color:red">All Feilds marked(*) are mandatory</p></center>
+</form>
+</body>
+ </html>

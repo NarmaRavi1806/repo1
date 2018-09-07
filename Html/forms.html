@@ -1,0 +1,62 @@
+<html>
+<head>
+<title> Skills Form</title>
+</head>
+<body>
+<form method="post" action="link.html" enctype="multipart/form-data">
+<table>
+<tr><td>First Name<td>
+<td><input type="text" name="fname" Value="Jake" maxlength="7" size="30" disabled/></td>
+</tr>
+<tr><td>Last Name<td>
+<td><input type="text" name="lname" value="Finland" readonly/></td>
+</tr>
+<tr><td>Password<td>
+<td><input type="Password" name="Password"/></td>
+</tr>
+<tr><td>Gender<td>
+<td><input type="radio" name="Gender"/>Male
+<input type="radio" name="Gender"/>Female</td> <!--radio button should have same name-->
+</tr>
+<tr>
+<td>Skills</td>
+<td><input type="checkbox" name="skills" checked/>Java
+<input type="checkbox" name="skills"/>JSP
+<input type="checkbox" name="skills"/>.NET
+<input type="checkbox" name="skills"/>SERVLET
+</td>
+</tr>
+<tr>
+<td>Location</td>
+<td><select name="location" multiple>
+<option value="">Select Location</option>
+<option value="Bangalore">Bangalore</option>
+<option value="Chennai">Chennai</option>
+<option value="Mumbai">Mumbai</option>
+<option value="Pune">Pune</option>
+<option value="Noida">Noida</option>
+<option value="Trivandram">Trivandram</option>
+<option value="Vellore">Vellore</option>
+<option value="Hyderabad">Hyderabad</option>
+<option value="Cochin">Cochin</option>
+</td></tr>
+<tr>
+<td>Comments</td>
+<td>
+<textarea name="Comments">
+</textarea>
+</td>
+</tr>
+<tr><input type="file"/></tr>
+<tr><td>Resume</td>
+<td><input type="file"/></td>
+</tr>
+<tr>
+<td></td>
+<td><input type="submit" value="apply"/></td>
+<td><input type="reset" value="clear"/></td>
+</tr>
+</table>
+</form>
+</body>
+<//html>
